@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A² Learning Studio — AI-Enhanced Construction Management Education</title>
+<meta name="description" content="Interactive learning platforms integrating GenAI as formative assessment agents for data-rich, student-centered success in construction management education. Built by Dr. Ali Keyvanfar at Kennesaw State University.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#080c18;--bg2:#0d1224;--pnl:#111a2e;--crd:#162036;--bdr:#243052;
+--txt:#e2e8f0;--dim:#8a9bbc;--mut:#5a6d8a;
+--bl:#3b82f6;--cy:#06b6d4;--gn:#22c55e;--am:#f59e0b;--or:#FF6B00;--pu:#a855f7;
+--gold:#FDB515;--r:12px}
+html{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-size:15px;scroll-behavior:smooth}
+body{min-height:100vh;overflow-x:hidden}
+
+/* Hero */
+.hero{padding:3rem 2rem 2rem;text-align:center;position:relative;overflow:hidden;max-width:900px;margin:0 auto}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(253,181,21,0.08) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.brand{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;position:relative}
+.logo{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;line-height:1.1;margin-bottom:.5rem;position:relative}
+.logo span{background:linear-gradient(135deg,var(--gold),var(--am),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tagline{font-size:1.1rem;color:var(--dim);max-width:550px;margin:0 auto .5rem;line-height:1.6}
+.sub{font-size:.85rem;color:var(--mut);max-width:500px;margin:0 auto 1.5rem;line-height:1.5}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.hero-stat .num{font-size:1.8rem;font-weight:800;color:var(--gold);line-height:1}
+.hero-stat .lbl{font-size:.68rem;color:var(--mut);margin-top:.2rem;font-weight:500}
+.by{font-size:.75rem;color:var(--mut);margin-top:.5rem}
+.by a{color:var(--bl);text-decoration:none;font-weight:500}
+.by a:hover{text-decoration:underline}
+
+/* Platform cards */
+.platforms{max-width:900px;margin:0 auto;padding:0 2rem 3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.5rem}
+.plat{background:var(--pnl);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;transition:all .3s;position:relative}
+.plat:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.plat-header{padding:1.5rem 1.5rem .5rem;position:relative}
+.plat-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.25rem .6rem;border-radius:2rem;margin-bottom:.6rem}
+.plat-badge.sim{background:rgba(255,107,0,.15);color:var(--or);border:1px solid rgba(255,107,0,.3)}
+.plat-badge.dc{background:rgba(59,130,246,.15);color:var(--bl);border:1px solid rgba(59,130,246,.3)}
+.plat h3{font-size:1.4rem;font-weight:800;margin-bottom:.3rem;line-height:1.2}
+.plat h3 .accent{color:var(--or)}
+.plat h3 .accent2{color:var(--cy)}
+.plat .desc{font-size:.85rem;color:var(--dim);line-height:1.6;margin-bottom:1rem}
+.plat-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
+.plat-tag{font-size:.65rem;font-weight:600;padding:.2rem .5rem;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--dim)}
+.plat-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem}
+.pm{text-align:center;padding:.6rem;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.04)}
+.pm .pmN{font-size:1.1rem;font-weight:800;line-height:1}
+.pm .pmL{font-size:.6rem;color:var(--mut);margin-top:.15rem;font-weight:500}
+.pm.or .pmN{color:var(--or)}.pm.bl .pmN{color:var(--bl)}.pm.gn .pmN{color:var(--gn)}
+.pm.cy .pmN{color:var(--cy)}.pm.am .pmN{color:var(--am)}.pm.pu .pmN{color:var(--pu)}
+.plat-cta{display:block;text-align:center;padding:1rem;font-size:.95rem;font-weight:700;text-decoration:none;transition:all .25s;border-top:1px solid var(--bdr)}
+.plat-cta.sim-cta{background:linear-gradient(135deg,var(--or),var(--am));color:#fff}
+.plat-cta.sim-cta:hover{filter:brightness(1.1);box-shadow:0 4px 24px rgba(255,107,0,.3)}
+.plat-cta.dc-cta{background:linear-gradient(135deg,var(--bl),var(--cy));color:#fff}
+.plat-cta.dc-cta:hover{filter:brightness(1.1);box-shadow:0 4px 24px rgba(59,130,246,.3)}
+.plat-course{font-size:.7rem;color:var(--mut);padding:0 1.5rem .8rem;font-weight:500}
+.plat-course strong{color:var(--dim)}
+
+/* Validation banner */
+.validation{max-width:900px;margin:0 auto 2.5rem;padding:0 2rem}
+.val-card{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(6,182,212,.06));border:1px solid rgba(34,197,94,.2);border-radius:var(--r);padding:1.5rem;text-align:center}
+.val-card h4{font-size:1rem;font-weight:700;color:var(--gn);margin-bottom:.8rem}
+.val-stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:.8rem}
+.val-stat .vN{font-size:1.5rem;font-weight:800;color:var(--gn);line-height:1}
+.val-stat .vL{font-size:.65rem;color:var(--dim);margin-top:.15rem;font-weight:500;max-width:100px}
+.val-quote{font-size:.85rem;color:var(--dim);font-style:italic;max-width:500px;margin:0 auto}
+.val-quote strong{color:var(--txt)}
+
+/* Footer */
+.footer{max-width:900px;margin:0 auto;padding:1.5rem 2rem 3rem;text-align:center;border-top:1px solid var(--bdr)}
+.footer p{font-size:.78rem;color:var(--mut);line-height:1.6;margin-bottom:.3rem}
+.footer a{color:var(--bl);text-decoration:none;font-weight:500}
+.footer a:hover{text-decoration:underline}
+.footer-logos{display:flex;justify-content:center;gap:1.5rem;margin-top:.8rem;flex-wrap:wrap}
+.footer-logo{font-size:.68rem;font-weight:600;color:var(--dim);padding:.3rem .8rem;border:1px solid var(--bdr);border-radius:6px}
+
+@media(max-width:600px){
+  .platforms{grid-template-columns:1fr;padding:0 1rem 2rem}
+  .hero{padding:2rem 1rem 1.5rem}
+  .hero-stats{gap:1.5rem}
+  .plat-metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="brand">A² Learning Studio</div>
+  <div class="logo"><span>GenAI-Integrated Learning Platforms</span></div>
+  <p class="tagline">Interactive simulation platforms that integrate generative AI as formative assessment agents — making learning data-rich, user-friendly, and effective for student success.</p>
+  <p class="sub">Purpose-built for construction management education. Every decision captured. Every outcome traceable. Every student supported.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">300+</div><div class="lbl">Students Engaged</div></div>
+    <div class="hero-stat"><div class="num">96%</div><div class="lbl">Student Endorsement</div></div>
+    <div class="hero-stat"><div class="num">6</div><div class="lbl">Platforms Built</div></div>
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">Courses Served</div></div>
+  </div>
+  <div class="by">Built by <a href="https://facultyweb.kennesaw.edu/akeyvanf/" target="_blank">Dr. Ali Keyvanfar</a> · Kennesaw State University · Department of Construction Management</div>
+</div>
+
+<div class="platforms">
+
+  <!-- BuildSim -->
+  <div class="plat">
+    <div class="plat-header">
+      <div class="plat-badge sim">🏗️ Construction Simulator</div>
+      <h3>Build<span class="accent">Sim</span></h3>
+      <p class="desc">HTML5 game-based construction management simulator. Drag and drop facilities on a blueprint grid, optimize worker travel distance, respect site constraints, and manage resources — all while receiving real-time AI formative feedback on your decisions.</p>
+      <div class="plat-tags">
+        <span class="plat-tag">Drag &amp; Drop</span>
+        <span class="plat-tag">Site Layout</span>
+        <span class="plat-tag">Resource Allocation</span>
+        <span class="plat-tag">CPM Scheduling</span>
+        <span class="plat-tag">Cost Control</span>
+        <span class="plat-tag">Safety</span>
+        <span class="plat-tag">Leaderboard</span>
+        <span class="plat-tag">Certificate</span>
+        <span class="plat-tag">Formative Report</span>
+      </div>
+      <div class="plat-metrics">
+        <div class="pm or"><div class="pmN">6</div><div class="pmL">Training Modules</div></div>
+        <div class="pm am"><div class="pmN">8+</div><div class="pmL">Decision Points/Module</div></div>
+        <div class="pm gn"><div class="pmN">94%</div><div class="pmL">Would Recommend</div></div>
+      </div>
+    </div>
+    <div class="plat-course">Deployed in: <strong>CM 3110</strong> (Wood Construction) · <strong>CM 6600</strong> (Risk Analysis) · <strong>CM 6901</strong> (GenAI in CM)</div>
+    <a href="buildsim.html" class="plat-cta sim-cta">▶ Launch BuildSim</a>
+  </div>
+
+  <!-- NEXUS-DC -->
+  <div class="plat">
+    <div class="plat-header">
+      <div class="plat-badge dc">⚡ Data Center Simulation</div>
+      <h3>NEXUS-<span class="accent2">DC</span> · Power Up</h3>
+      <p class="desc">Multi-role data center lifecycle risk simulation. Build and manage a $500M+ data center across 3 crisis waves — balancing cost, uptime, safety, sustainability, and stakeholder satisfaction while learning from 6 professional role perspectives.</p>
+      <div class="plat-tags">
+        <span class="plat-tag">Lifecycle Risk</span>
+        <span class="plat-tag">8 Scoring Dimensions</span>
+        <span class="plat-tag">6 Professional Roles</span>
+        <span class="plat-tag">3 Crisis Waves</span>
+        <span class="plat-tag">ISO 31000</span>
+        <span class="plat-tag">PMBOK</span>
+        <span class="plat-tag">Guided &amp; Blind Modes</span>
+        <span class="plat-tag">Formative Report</span>
+      </div>
+      <div class="plat-metrics">
+        <div class="pm bl"><div class="pmN">8</div><div class="pmL">Scoring Dimensions</div></div>
+        <div class="pm cy"><div class="pmN">6</div><div class="pmL">Professional Roles</div></div>
+        <div class="pm pu"><div class="pmN">3</div><div class="pmL">Crisis Waves</div></div>
+      </div>
+    </div>
+    <div class="plat-course">Deployed in: <strong>CM 6600</strong> (Construction Risk Analysis &amp; Control)</div>
+    <a href="nexus-dc.html" class="plat-cta dc-cta">▶ Launch NEXUS-DC</a>
+  </div>
+
+</div>
+
+<!-- Validation -->
+<div class="validation">
+  <div class="val-card">
+    <h4>✅ Validated by Students (N=50, Spring 2026)</h4>
+    <div class="val-stats">
+      <div class="val-stat"><div class="vN">96%</div><div class="vL">Endorsed for K-12 effectiveness</div></div>
+      <div class="val-stat"><div class="vN">94%</div><div class="vL">Would recommend to classmates</div></div>
+      <div class="val-stat"><div class="vN">88%</div><div class="vL">More effective than traditional assignments</div></div>
+      <div class="val-stat"><div class="vN">84%</div><div class="vL">Trusted AI feedback as fair</div></div>
+    </div>
+    <p class="val-quote">"<strong>It is an activity that helps you learn rather than an assignment.</strong>" — KSU Student</p>
+  </div>
+</div>
+
+<div class="footer">
+  <p><strong>A² Learning Studio</strong> · Dr. Ali Keyvanfar · Kennesaw State University</p>
+  <p>Department of Construction Management · College of Architecture &amp; Construction Management</p>
+  <p><a href="https://facultyweb.kennesaw.edu/akeyvanf/">Faculty Profile</a> · <a href="https://facultyweb.kennesaw.edu/akeyvanf/Fun%20Yet%20Relevant.php">AI Innovation Portfolio</a> · <a href="https://scholar.google.com/citations?user=nPs2iWkAAAAJ&hl=en">Google Scholar</a></p>
+  <div class="footer-logos">
+    <span class="footer-logo">🏛️ Kennesaw State University</span>
+    <span class="footer-logo">🎓 Governor's AI Teaching Fellow</span>
+    <span class="footer-logo">💻 GitHub Education Faculty</span>
+    <span class="footer-logo">🔊 ElevenLabs Faculty Program</span>
+  </div>
+</div>
+
+</body>
+</html>

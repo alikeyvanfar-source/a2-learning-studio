@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS-DC · Power Up</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#080c18;--bg2:#0d1224;--pnl:#111a2e;--crd:#162036;--crd2:#1c2a48;--bdr:#243052;--bdH:#3b5998;
+--txt:#e2e8f0;--dim:#8a9bbc;--mut:#5a6d8a;
+--bl:#3b82f6;--cy:#06b6d4;--gn:#22c55e;--am:#f59e0b;--rd:#ef4444;--pu:#a855f7;--edu:#818cf8;
+--gB:rgba(59,130,246,.18);--gC:rgba(6,182,212,.18);--gG:rgba(34,197,94,.18);--gA:rgba(245,158,11,.18);--gR:rgba(239,68,68,.18);--gE:rgba(129,140,248,.15);
+--glass:rgba(17,26,46,.75);--glassBdr:rgba(255,255,255,.06);
+--ft:'Nunito',sans-serif;--mn:'JetBrains Mono',monospace;--hd:'Outfit',sans-serif;--r:12px;--rs:8px}
+html{background:var(--bg);color:var(--txt);font-family:var(--ft);font-size:15px}body{min-height:100vh;overflow-x:hidden}
+h1,h2,h3,.wTi,.rTi{font-family:var(--hd)}
+.scr{display:none;width:100%;min-height:100vh}.scr.active{display:flex;flex-direction:column;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:var(--rs);border:none;font-family:var(--ft);font-weight:700;font-size:.88rem;cursor:pointer;transition:all .25s}
+.bP{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.3)}.bP:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 24px rgba(59,130,246,.4)}.bP:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.bO{background:var(--glass);color:var(--bl);border:1px solid var(--glassBdr);backdrop-filter:blur(8px)}.bO:hover{background:var(--gB);border-color:var(--bl)}.bS{padding:6px 14px;font-size:.78rem}
+.bG{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 4px 16px rgba(34,197,94,.3)}
+/* Educational accent — purple highlight for "learn this" moments */
+.eduTag{display:inline-flex;align-items:center;gap:3px;font-size:.62rem;font-weight:700;color:var(--edu);background:var(--gE);padding:2px 8px;border-radius:10px;letter-spacing:.3px}
+.eduFact{background:var(--gE);border:1px solid rgba(129,140,248,.15);border-left:3px solid var(--edu);border-radius:var(--rs);padding:8px 10px;font-size:.75rem;color:var(--dim);line-height:1.5;margin:4px 0}
+.eduFact strong{color:var(--edu)}
+.eduFact::before{content:'💡 ';font-size:.85rem}
+/* Micro-celebration */
+@keyframes celebrate{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+.celebrate{animation:celebrate .4s ease}
+@keyframes bIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+/* Glass card */
+.glassCard{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glassBdr);border-radius:var(--r)}
+
+/* ═══ WELCOME ═══ */
+#welcome{padding:24px;position:relative;max-width:760px;margin:0 auto}
+.wHdr{text-align:center;margin-bottom:16px}.wLogo{font-family:var(--mn);font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--mut)}
+.wTi{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;background:linear-gradient(135deg,#3b82f6,#06b6d4,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin:4px 0}
+.wSub{font-size:.88rem;color:var(--dim);line-height:1.5}
+.dcBan{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(6,182,212,.08));border:1px solid rgba(59,130,246,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+.dcBan .dcIc{font-size:28px}.dcBan .dcLb{font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:var(--cy);font-weight:700}.dcBan .dcNm{font-weight:700;font-size:.9rem}.dcBan .dcDs{font-size:.68rem;color:var(--dim);line-height:1.3}
+.iGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.iBox{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--r);padding:12px}.iBox .ibT{font-weight:700;font-size:.78rem;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.iBox .ibX{font-size:.68rem;color:var(--dim);line-height:1.5}.iBox .ibX strong{color:var(--txt)}
+.ibL{list-style:none;margin:2px 0}.ibL li{padding:1px 0 1px 12px;position:relative;font-size:.66rem;color:var(--dim);line-height:1.4}.ibL li::before{content:'→';position:absolute;left:0;color:var(--cy);font-weight:700}
+.dtBtns{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.dtP{display:none;margin-bottom:10px;animation:bIn .2s ease}
+.mSel{display:flex;gap:12px;margin-bottom:14px}
+.mCd{flex:1;background:var(--crd);border:2px solid var(--bdr);border-radius:var(--r);padding:14px 10px;cursor:pointer;transition:.2s;text-align:center;position:relative}
+.mCd:hover{border-color:var(--bdH);transform:translateY(-1px)}.mCd.sel{border-color:var(--bl);box-shadow:0 0 16px var(--gB);background:var(--crd2)}
+.mCd .mIc{font-size:22px;margin-bottom:3px}.mCd .mTl{font-weight:700;font-size:.85rem;margin-bottom:2px}.mCd .mDs{font-size:.68rem;color:var(--dim);line-height:1.3}
+.mCd .mTg{position:absolute;top:-5px;right:8px;font-size:.52rem;font-weight:700;padding:2px 6px;border-radius:6px}.tg1{background:var(--gA);color:var(--am)}.tg2{background:var(--gG);color:var(--gn)}
+.nRow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.nIn{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--rs);padding:10px 14px;font-size:.88rem;color:var(--txt);font-family:var(--ft);width:200px;outline:none}.nIn:focus{border-color:var(--bl);box-shadow:0 0 0 3px var(--gB)}.nIn::placeholder{color:var(--mut)}
+
+/* ═══ BUILD SCREEN — 3 column always ═══ */
+#build{padding:0}
+.bL{display:grid;grid-template-columns:180px 1fr 240px;grid-template-rows:46px auto 1fr;width:100%;height:100vh;overflow:hidden}
+.topBar{grid-column:1/-1;background:var(--pnl);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:10}
+.topL,.topR{display:flex;align-items:center;gap:14px}
+.tLo{font-family:var(--mn);font-size:.55rem;letter-spacing:3px;color:var(--mut);text-transform:uppercase}
+.hTm{font-family:var(--mn);font-size:1.3rem;font-weight:700;color:var(--cy)}.hTm.warn{color:var(--am);animation:pl 1s infinite}.hTm.danger{color:var(--rd);animation:pl .5s infinite}
+.hBd{font-family:var(--mn);font-weight:700;font-size:.95rem}.hBd .sy{color:var(--gn)}
+.hLb{font-size:.52rem;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+.mTg2{font-size:.52rem;padding:2px 5px;border-radius:6px;font-weight:700}.mTg2.bl{background:var(--gA);color:var(--am)}.mTg2.gd{background:var(--gG);color:var(--gn)}
+
+/* Static rules strip — educational, large, multi-row */
+.rulesStrip{grid-column:1/-1;background:linear-gradient(180deg,var(--bg2),var(--pnl));border-bottom:1px solid var(--bdr);padding:6px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 10px;font-size:.75rem}
+.ruleRow{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:var(--rs);background:var(--crd);border:1px solid var(--bdr)}
+.ruleRow .rIcon{font-size:16px;flex-shrink:0}
+.ruleRow .rTxt{color:var(--dim);line-height:1.3}.ruleRow .rTxt strong{color:var(--txt)}
+.ruleRow.highlight{border-color:var(--am);background:rgba(245,158,11,.06)}
+.ruleRow.highlight .rTxt{color:var(--am)}
+.covLegend{display:flex;gap:10px;align-items:center;grid-column:1/-1;padding:2px 0;font-size:.68rem;color:var(--dim)}
+.covLegend .covItem{display:flex;align-items:center;gap:4px}
+.covLegend .covDot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.pal{background:var(--bg2);border-right:1px solid var(--bdr);padding:8px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.palSec{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin:6px 0 3px 2px}
+.pTl{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--rs);border:2px solid transparent;cursor:grab;transition:.15s;user-select:none}
+.pTl:hover{background:var(--crd);border-color:var(--bdr)}.pTl.sel{background:var(--crd2);border-color:var(--bl);box-shadow:0 0 8px var(--gB)}
+.pIc{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.pIn{flex:1;min-width:0}
+.pIn .pN{font-weight:600;font-size:.72rem;display:flex;align-items:center;gap:4px}
+.pIn .pN .pCost{font-family:var(--mn);font-size:.6rem;color:var(--gn)}
+.pIn .pDesc{font-size:.56rem;color:var(--dim);line-height:1.2;margin-top:1px}
+.pIn .pRange{display:inline-flex;align-items:center;gap:2px;font-size:.5rem;color:var(--cy);background:var(--gC);padding:1px 5px;border-radius:4px;margin-top:2px}
+.pRm{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--rs);border:2px solid transparent;cursor:pointer}.pRm:hover{background:rgba(239,68,68,.08)}.pRm.sel{border-color:var(--rd);background:rgba(239,68,68,.1)}
+
+/* Palette tile tooltip — fixed position to escape overflow */
+.pTl{position:relative}
+#tileTip{display:none;position:fixed;width:250px;background:var(--pnl);border:1px solid var(--bdH);border-radius:var(--r);padding:12px;z-index:100;box-shadow:0 8px 28px rgba(0,0,0,.6);animation:bIn .15s ease;pointer-events:none}
+#tileTip .ppNm{font-weight:800;font-size:.9rem;font-family:var(--hd);margin-bottom:2px}
+#tileTip .ppRng{font-size:.65rem;color:var(--cy);font-weight:600;margin-bottom:6px}
+#tileTip .ppDs{font-size:.72rem;color:var(--dim);line-height:1.4;margin-bottom:6px}
+#tileTip .ppFact{font-size:.68rem;margin-bottom:4px}
+#tileTip .ppWhy{font-size:.68rem;color:var(--am);font-weight:600}
+/* Role tooltip — same approach */
+#roleTip{display:none;position:fixed;width:210px;background:var(--pnl);border:1px solid var(--bdH);border-radius:var(--r);padding:10px;z-index:100;box-shadow:0 8px 28px rgba(0,0,0,.6);animation:bIn .15s ease;pointer-events:none}
+#roleTip .rtNm{font-weight:700;font-size:.75rem;color:var(--cy);margin-bottom:3px}
+#roleTip .rtDs{font-size:.65rem;color:var(--dim);line-height:1.4;margin-bottom:4px}
+#roleTip .rtDm{font-size:.62rem;color:var(--am);font-weight:600;border-top:1px solid var(--bdr);padding-top:4px}
+#roleTip .rtDims{font-size:.55rem;color:var(--mut);margin-top:2px}
+.cvBox{margin-top:auto;padding:8px;background:var(--crd);border-radius:var(--rs);border:1px solid var(--bdr)}
+.cvTitle{font-size:.55rem;letter-spacing:1px;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.cvRow{display:flex;justify-content:space-between;padding:2px 0;font-size:.65rem}
+.cvVal{font-family:var(--mn);font-weight:600;font-size:.65rem}.cvVal.g{color:var(--gn)}.cvVal.r{color:var(--rd)}.cvVal.y{color:var(--am)}
+
+/* CENTER: Grid */
+.gridArea{display:grid;grid-template-rows:1fr minmax(160px,auto);overflow:hidden}
+.gridWrap{display:flex;align-items:center;justify-content:center;position:relative;background:var(--bg);overflow:hidden}
+.grid{display:grid;grid-template-columns:20px repeat(10,46px);grid-template-rows:20px repeat(7,46px);gap:2px;z-index:1}
+.gLabel{display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:.55rem;font-weight:700;color:var(--mut);user-select:none}
+.gLabel.col{color:var(--cy)}.gLabel.row{color:var(--am)}
+.cell{width:46px;height:46px;background:var(--crd);border:1px solid var(--bdr);border-radius:3px;position:relative;cursor:pointer;transition:all .15s;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.cell:hover{border-color:var(--bdH);z-index:2}
+.cell.preview{border-color:var(--bl);box-shadow:inset 0 0 16px var(--gB)}
+.cell.noplace{border-color:var(--rd);box-shadow:inset 0 0 14px var(--gR);cursor:not-allowed}
+.cell.dragover{border-color:var(--bl);box-shadow:inset 0 0 18px var(--gB);transform:scale(1.03)}
+.cell .tI{font-size:15px;pointer-events:none;z-index:3;position:relative}
+.cell .tN{font-size:.42rem;color:var(--dim);pointer-events:none;z-index:3}
+.cell .cG{position:absolute;inset:0;border-radius:2px;opacity:0;transition:.3s;pointer-events:none;z-index:1}
+.cell.hasBoth .cG{opacity:1;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25)}
+.cell.hasPower .cG{opacity:1;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15)}
+.cell.hasCool .cG{opacity:1;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.15)}
+.cell.rOK .tI{filter:drop-shadow(0 0 5px rgba(34,197,94,.7))}.cell.rBD .tI{filter:drop-shadow(0 0 5px rgba(239,68,68,.6))}
+/* Coverage radius preview */
+.cell.radiusPreview{background:rgba(59,130,246,.06)!important;border-color:rgba(59,130,246,.25)!important}
+.cell.radiusCenter{background:rgba(59,130,246,.15)!important;border-color:var(--bl)!important;box-shadow:0 0 8px var(--gB)}
+/* Ghost */
+.cell.ghost::after{content:attr(data-ghost);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;opacity:.18;pointer-events:none;z-index:5;border:2px dashed rgba(59,130,246,.2);border-radius:2px;animation:gp 2.5s infinite}
+@keyframes gp{0%,100%{opacity:.1}50%{opacity:.25}}.cell.ghost.occupied::after{display:none}
+
+/* Role strip — 3x2 grid of landscape ID cards */
+.roleStrip{background:var(--bg2);border-top:1px solid var(--bdr);padding:6px 8px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:5px;overflow:hidden;min-height:160px}
+.rlCard{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto 1fr;gap:2px 8px;
+  background:var(--crd);border:1px solid var(--bdr);border-radius:var(--rs);padding:7px 10px;
+  transition:.25s;cursor:default;position:relative;overflow:hidden}
+.rlCard.active{border-color:var(--cy);background:var(--crd2)}
+/* Avatar — spans both rows on left */
+.rlAv{grid-row:1/-1;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;border:2px solid var(--bdr);transition:.3s;align-self:center}
+.rlCard.active .rlAv{border-color:var(--cy);box-shadow:0 0 8px var(--gC)}
+/* Top-right: name + role + wave badges */
+.rlTop{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rlNm{font-size:.72rem;font-weight:700;white-space:nowrap}
+.rlRl{font-size:.55rem;color:var(--mut);white-space:nowrap}
+.rlWaves{display:flex;gap:2px;margin-left:auto}
+.rlWaves .wvBadge{font-family:var(--mn);font-size:.5rem;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bg);border:1px solid var(--bdr);color:var(--mut);text-align:center}
+.rlWaves .wvBadge.scored{border-color:transparent}
+.rlWaves .wvBadge.happy{background:var(--gG);color:var(--gn);border-color:rgba(34,197,94,.2)}
+.rlWaves .wvBadge.mid{background:var(--gA);color:var(--am);border-color:rgba(245,158,11,.2)}
+.rlWaves .wvBadge.angry{background:var(--gR);color:var(--rd);border-color:rgba(239,68,68,.2)}
+/* Bottom-right: communication log — landscape readable */
+.rlBubble{background:var(--bg);border-radius:4px;padding:5px 8px;
+  font-size:.68rem;color:var(--dim);line-height:1.4;text-align:left;
+  overflow-y:auto;max-height:none}
+.rlBubble .bEntry{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.65rem}
+.rlBubble .bEntry:last-child{border-bottom:none}
+.rlBubble .bDemand{color:var(--am);font-weight:600;font-size:.68rem}
+.rlBubble .bReact{font-weight:600}
+/* Floating speech cloud */
+.rlCloud{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  background:var(--pnl);border:1px solid var(--cy);border-radius:var(--r);padding:8px 10px;
+  margin-bottom:8px;min-width:130px;max-width:200px;z-index:55;
+  box-shadow:0 6px 24px rgba(0,0,0,.5);text-align:center;font-size:.65rem;font-weight:600;
+  color:var(--txt);line-height:1.3;animation:cloudPop .3s ease}
+.rlCloud::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid var(--cy)}
+.rlCloud.show{display:block}
+@keyframes cloudPop{from{opacity:0;transform:translateX(-50%) translateY(4px) scale(.9)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+/* Role hover — handled by JS #roleTip */
+
+/* RIGHT PANEL: Context / Tips / Chat */
+.ctxPanel{background:var(--bg2);border-left:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden}
+.ctxHdr{padding:8px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px}
+.ctxHdr .ctxIcon{font-size:16px}.ctxHdr .ctxTitle{font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--cy)}
+.ctxBody{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
+.ctxAct{padding:8px 10px;border-top:1px solid var(--bdr)}
+
+/* Context messages */
+.cMsg{border-radius:var(--rs);padding:8px 10px;font-size:.72rem;line-height:1.5;animation:bIn .3s ease}
+.cMsg.tip{background:var(--crd);color:var(--dim);border-left:3px solid var(--cy)}
+.cMsg.tip strong{color:var(--txt)}
+.cMsg.warn{background:var(--gA);color:#f7c948;border-left:3px solid var(--am)}
+.cMsg.demand{background:var(--crd2);border-left:3px solid var(--pu);color:var(--dim)}
+.cMsg.demand .dName{font-weight:700;color:var(--cy);font-size:.65rem;margin-bottom:2px}
+.cMsg.narrator{background:var(--crd);color:var(--dim);border-left:3px solid var(--cy)}.cMsg.narrator strong{color:var(--txt)}
+.cMsg.danger{background:var(--gR);color:#f87171;border-left:3px solid var(--rd)}
+.cMsg.success{background:var(--gG);color:#4ade80;border-left:3px solid var(--gn)}
+.cMsg.role{background:var(--crd2);border-left:3px solid var(--pu);color:var(--dim)}
+.cMsg.role .rmNm{font-weight:700;color:var(--cy);font-size:.65rem;margin-bottom:2px}
+.cMsg.role .rmSat{font-weight:700;margin-top:3px;font-size:.68rem}
+.cMsg.role .rmSat.happy{color:var(--gn)}.cMsg.role .rmSat.mid{color:var(--am)}.cMsg.role .rmSat.angry{color:var(--rd)}
+
+/* Live bars in context panel (guided mode) */
+.ldBar{display:flex;align-items:center;gap:3px;padding:1px 0;font-size:.55rem}
+.ldBar .ldLb{width:42px;color:var(--dim);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ldBar .ldBg{flex:1;height:8px;background:var(--crd);border-radius:2px;overflow:hidden}
+.ldBar .ldFl{height:100%;border-radius:2px;transition:width .3s;min-width:1px}
+.ldBar .ldVl{font-family:var(--mn);font-weight:600;width:22px;text-align:right}
+
+/* ═══ SIM SCREEN ═══ */
+#sim{padding:0}
+.sL{display:grid;grid-template-columns:1fr 280px;grid-template-rows:46px auto 1fr;width:100%;height:100vh;overflow:hidden}
+.sPr{grid-column:1;background:var(--bg2);border-bottom:1px solid var(--bdr);padding:4px 12px;display:flex;gap:2px;align-items:center}
+.spS{flex:1;display:flex;align-items:center;gap:3px;padding:3px 6px;border-radius:var(--rs);font-size:.6rem;color:var(--mut);transition:.3s}
+.spS .spD{width:14px;height:14px;border-radius:50%;border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:7px;flex-shrink:0}
+.spS.active{color:var(--txt);font-weight:600;background:rgba(6,182,212,.06)}.spS.active .spD{border-color:var(--cy);background:var(--gC);color:var(--cy)}
+.spS.done .spD{border-color:var(--gn);background:var(--gG);color:var(--gn)}
+.spA{color:var(--mut);font-size:.45rem}
+
+/* Sim cell states */
+.cell.online .tI{animation:onP 2s infinite}@keyframes onP{0%,100%{filter:drop-shadow(0 0 3px rgba(34,197,94,.3))}50%{filter:drop-shadow(0 0 8px rgba(34,197,94,.6))}}
+.cell.heating{animation:hG 1s infinite}@keyframes hG{0%,100%{background:var(--crd)}50%{background:rgba(245,158,11,.15)}}
+.cell.overheated{background:rgba(239,68,68,.12)!important;border-color:var(--rd)!important}.cell.overheated .tI{opacity:.3}
+.cell.blackout{background:#050810!important;border-color:#111!important}.cell.blackout .tI{opacity:.08}
+.cell.backupOn{background:rgba(59,130,246,.08)!important;border-color:rgba(59,130,246,.3)!important}
+.cell.onFire{background:rgba(239,68,68,.2)!important;border-color:var(--rd)!important;animation:fA .5s infinite}@keyframes fA{0%,100%{box-shadow:inset 0 0 10px rgba(239,68,68,.3)}50%{box-shadow:inset 0 0 20px rgba(239,68,68,.5)}}
+.cell.destroyed{background:#0a0a0a!important;border-color:#1a1a1a!important}.cell.destroyed .tI{opacity:.1}
+.cell.survived .tI{animation:sP 1.5s infinite}@keyframes sP{0%,100%{filter:drop-shadow(0 0 4px rgba(34,197,94,.4))}50%{filter:drop-shadow(0 0 10px rgba(34,197,94,.8))}}
+.wBn{position:fixed;top:50%;left:35%;transform:translate(-50%,-50%);z-index:100;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.wBn.show{opacity:1}
+.wBn .wT{font-size:2rem;font-weight:900;text-shadow:0 0 30px rgba(0,0,0,.8)}.wBn .wS{font-size:.85rem;margin-top:4px;color:var(--dim)}
+.boOv{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:90;transition:opacity .5s}.boOv.active{opacity:.85}
+
+/* ═══ RESULTS ═══ */
+#results{padding:20px;justify-content:flex-start;align-items:center;overflow-y:auto;max-width:700px;margin:0 auto;width:100%}
+.rHd{text-align:center;margin:10px 0 8px}.rTi{font-size:1.6rem;font-weight:800;margin-bottom:2px}.rSu{color:var(--dim);font-size:.82rem}
+.sB{font-family:var(--mn);font-size:3rem;font-weight:800;text-align:center;line-height:1}.sB.expert{color:var(--gn)}.sB.proficient{color:var(--cy)}.sB.developing{color:var(--am)}.sB.novice{color:var(--rd)}
+.rTm{text-align:center;font-family:var(--mn);color:var(--dim);margin:4px 0 12px;font-size:.78rem}.rTm .bonus{color:var(--gn);font-weight:600}
+.rSatG{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;margin:0 auto 12px}
+.rSC{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--rs);padding:8px 6px;text-align:center}
+.rSC .rsAv{font-size:18px}.rSC .rsNm{font-size:.55rem;font-weight:700}.rSC .rsRl{font-size:.45rem;color:var(--dim)}
+.rSC .rsBr{height:5px;background:var(--bdr);border-radius:3px;overflow:hidden;margin:3px 0}.rSC .rsBr div{height:100%;border-radius:3px}
+.rSC .rsVl{font-family:var(--mn);font-size:.8rem;font-weight:700}
+.dGrd{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:100%;margin:0 auto 12px}
+.dI{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--rs);padding:6px 4px;text-align:center}
+.dL{font-size:.5rem;color:var(--dim);text-transform:uppercase;margin-bottom:1px}.dV{font-family:var(--mn);font-size:.9rem;font-weight:700}
+.dBr{height:3px;border-radius:2px;background:var(--bdr);margin-top:2px;overflow:hidden}.dBr div{height:100%;border-radius:2px}
+canvas#radar{max-width:260px;width:100%;margin:0 auto 10px;display:block}
+.insBox{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--r);padding:12px;width:100%;margin:4px 0}
+.insT{font-weight:700;margin-bottom:5px;font-size:.8rem}.insTx{font-size:.72rem;color:var(--dim);line-height:1.5}.insTx strong{color:var(--txt)}
+.fxI{display:flex;gap:6px;padding:5px 8px;background:var(--bg2);border-radius:var(--rs);margin:3px 0;border-left:3px solid var(--am)}.fxI .fxIc{font-size:12px;flex-shrink:0}.fxI .fxTx{font-size:.68rem;color:var(--dim);line-height:1.4}.fxI .fxTx strong{color:var(--txt)}.fxI.good{border-left-color:var(--gn)}.fxI.bad{border-left-color:var(--rd)}
+.rActs{display:flex;gap:8px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+
+/* Attempt Board */
+.abCd{background:var(--crd);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:5px;overflow:hidden;cursor:pointer;transition:.2s}.abCd:hover{border-color:var(--bdH)}
+.abH{display:flex;align-items:center;padding:8px 10px;gap:6px}
+.abRk{font-family:var(--mn);font-weight:700;font-size:.75rem;width:22px;text-align:center}.abRk.g{color:#fbbf24}.abRk.s{color:#94a3b8}.abRk.b{color:#d97706}
+.abInf{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.abNm{font-weight:600;font-size:.78rem}.abSc{font-family:var(--mn);font-weight:700;font-size:.88rem}
+.abMt{font-size:.58rem;color:var(--dim);display:flex;gap:5px}
+.abBd2{font-size:.52rem;font-weight:700;padding:1px 5px;border-radius:5px}
+.abAr{color:var(--mut);font-size:.65rem;transition:.2s}.abCd.open .abAr{transform:rotate(90deg)}
+.abBdy{display:none;padding:0 10px 8px;border-top:1px solid var(--bdr)}.abCd.open .abBdy{display:block;animation:bIn .2s ease}
+.abDms{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:6px 0}
+.abDm{text-align:center;padding:3px;background:var(--bg2);border-radius:var(--rs)}.abDm .adL{font-size:.45rem;color:var(--dim);text-transform:uppercase}.abDm .adV{font-family:var(--mn);font-weight:700;font-size:.72rem}
+.abDm .adBr{height:2px;border-radius:1px;background:var(--bdr);margin-top:1px;overflow:hidden}.abDm .adBr div{height:100%;border-radius:1px}
+.abWvs{display:flex;gap:4px;margin:4px 0;font-size:.56rem}.abWv{flex:1;padding:3px;border-radius:var(--rs);text-align:center}.abWv.ok{background:var(--gG);color:#4ade80}.abWv.bad{background:var(--gR);color:#f87171}
+.abBld{font-size:.55rem;color:var(--dim);margin-top:2px}
+.dGhost{position:fixed;pointer-events:none;z-index:999;font-size:22px;opacity:.8;transform:translate(-50%,-50%)}
+
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}.mo.active{display:flex}
+.moI{background:var(--pnl);border:1px solid var(--bdr);border-radius:var(--r);max-width:500px;width:92%;max-height:85vh;overflow-y:auto;padding:18px}
+.moI h2{font-size:1rem;margin-bottom:6px}.moI p{color:var(--dim);line-height:1.5;margin-bottom:6px;font-size:.8rem}
+.moClose{float:right;background:none;border:none;color:var(--mut);font-size:1rem;cursor:pointer}
+
+@media(max-width:900px){.bL{grid-template-columns:150px 1fr 200px!important}.grid{grid-template-columns:20px repeat(10,42px);grid-template-rows:20px repeat(7,42px)}.cell{width:42px;height:42px}.cell .tI{font-size:12px}.cell .tN{display:none}.gLabel{font-size:.45rem}}
+@media(max-width:680px){.bL{grid-template-columns:1fr!important;grid-template-rows:46px 100px 1fr 140px!important}
+.sL{grid-template-columns:1fr!important;grid-template-rows:46px auto 1fr 180px!important}.ctxPanel{border-left:none;border-top:1px solid var(--bdr)}
+.pal{border-right:none;border-bottom:1px solid var(--bdr);display:flex;flex-wrap:wrap;gap:2px;overflow-y:auto;padding:4px}.palSec{display:none}.pTl{padding:3px 5px}.pIc{width:24px;height:24px;font-size:10px}.pIn .pDesc,.pIn .pRange{display:none}.cvBox{display:none}
+.grid{grid-template-columns:16px repeat(10,36px);grid-template-rows:16px repeat(7,36px)}.cell{width:36px;height:36px}.gLabel{font-size:.4rem}
+.roleStrip{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:3px;padding:4px}.rlBubble{max-height:32px;font-size:.5rem}.rlWaves .wvBadge{font-size:.4rem;padding:1px 2px}
+.dGrd,.rSatG{grid-template-columns:repeat(2,1fr)}.mSel{flex-direction:column}.iGrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="welcome" class="scr active">
+  <div class="wHdr"><div class="wLogo">NEXUS-DC v3.7</div><h1 class="wTi">Power Up</h1><p class="wSub">Design a real data center floor — the invisible infrastructure behind every app, video, and AI you use daily.</p></div>
+
+  <!-- What is a DC — educational context -->
+  <div class="eduFact" style="margin-bottom:12px"><strong>Did you know?</strong> Every time you stream a video, send a message, or ask an AI a question, your request travels to a data center — a building filled with thousands of servers, cooled 24/7, powered by redundant generators. A single hour of downtime at a major DC can cost <strong>$300,000+</strong>. Your job: design one that never goes down.</div>
+
+  <div class="dcBan"><div class="dcIc">🏢</div><div><div class="dcLb">Your Mission</div><div class="dcNm">Build a Tier III Colocation Data Center</div><div class="dcDs">99.982% uptime SLA · N+1 redundancy · Concurrent maintainability</div><div class="eduTag" style="margin-top:4px">📖 Tier III = only 1.6 hours downtime per year</div></div></div>
+  <div class="iGrid">
+    <div class="iBox"><div class="ibT">📚 You'll Learn</div><div class="ibX"><ul class="ibL"><li>Why <strong>infrastructure placement</strong> determines survival</li><li>How <strong>cascade failures</strong> propagate</li><li>Why <strong>6 professional roles</strong> see designs differently</li><li>Recognize <strong>cost-tunneling bias</strong></li></ul></div></div>
+    <div class="iBox"><div class="ibT">🏆 How to Win</div><div class="ibX"><ul class="ibL"><li><strong>⚡❄️ Infrastructure first</strong> — before racks</li><li><strong>🔋🧯 Build for failure</strong> — UPS + fire</li><li><strong>📊 Balance 8 dimensions</strong> — no single-axis</li><li><strong>👥 Satisfy 6 stakeholders</strong></li></ul></div></div>
+  </div>
+  <div class="dtBtns"><button class="btn bO bS" onclick="toggleDt('dtG')">🎮 Game Rules</button><button class="btn bO bS" onclick="toggleDt('dtW')">🌊 Waves</button></div>
+  <div id="dtG" class="dtP"><div class="iBox"><div class="ibX"><strong>Round 1 — Blind:</strong> Drag tiles, watch demands, survive waves. Each role scores your build.<br><strong>Round 2 — Guided:</strong> Mentor walks you through the optimal Fortress pattern step by step.<br><strong>$80 budget · 6 minutes. The score gap = the learning.</strong></div></div></div>
+  <div id="dtW" class="dtP"><div class="iBox"><div class="ibX"><strong>W1 Normal:</strong> Tests ⚡+❄️ coverage. Dead racks = wasted money.<br><strong>W2 Heat:</strong> Cooling radius halves. Edge racks overheat.<br><strong>W3 Outage+Fire:</strong> Generators off. Only UPS works. Fire spreads.</div></div></div>
+  <div class="mSel">
+    <div class="mCd sel" data-mode="blind" onclick="pickMode('blind')"><div class="mTg tg1">FIRST</div><div class="mIc">🎯</div><div class="mTl">Blind Challenge</div><div class="mDs">Your instincts + role demands.</div></div>
+    <div class="mCd" data-mode="guided" onclick="pickMode('guided')"><div class="mTg tg2">SECOND</div><div class="mIc">🧠</div><div class="mTl">Guided Mode</div><div class="mDs">Mentor + ghost + live dashboard.</div></div>
+  </div>
+  <div class="nRow"><input type="text" id="pName" class="nIn" placeholder="Your name" maxlength="24" autocomplete="off" oninput="document.getElementById('goBtn').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter'&&this.value.trim())startBuild()"><button class="btn bP" id="goBtn" disabled onclick="startBuild()">Build Your DC →</button></div>
+  <button class="btn bO bS" onclick="goLB()">📋 Attempt Board</button>
+</div>
+
+<!-- BUILD -->
+<div id="build" class="scr"><div class="bL" id="bL">
+  <div class="topBar"><div class="topL"><div class="tLo">NEXUS-DC</div><div><div class="hLb">Time</div><div class="hTm" id="bTm">6:00</div></div><span class="mTg2" id="mTg2"></span></div>
+  <div class="topR"><div style="text-align:right"><div class="hLb">Budget</div><div class="hBd"><span class="sy">$</span><span id="bBd">80</span></div></div><div style="text-align:right"><div class="hLb">Racks</div><div id="bRk" style="font-family:var(--mn);font-weight:600">0</div></div><button class="btn bP bS" onclick="launchSim()">▶ Simulate</button></div></div>
+  <div class="rulesStrip">
+    <div class="ruleRow"><span class="rIcon">1️⃣</span><span class="rTxt"><strong>Select a tile</strong> from the left palette, then <strong>click a grid cell</strong> to place it. Hover tiles for details.</span></div>
+    <div class="ruleRow"><span class="rIcon">2️⃣</span><span class="rTxt"><strong>Infrastructure first!</strong> Place ⚡ Generators + ❄️ Cooling before 🖥️ Racks. Racks need BOTH to function.</span></div>
+    <div class="ruleRow"><span class="rIcon">3️⃣</span><span class="rTxt"><strong>Protect for failure.</strong> 🔋 UPS saves racks in blackout. 🧯 Fire blocks fire spread. Skipping = Wave 3 disaster.</span></div>
+    <div class="ruleRow"><span class="rIcon">4️⃣</span><span class="rTxt"><strong>Center-place infrastructure</strong> — a center generator covers 25 cells vs only 9 on a corner. Position matters!</span></div>
+    <div class="ruleRow"><span class="rIcon">5️⃣</span><span class="rTxt"><strong>Watch the 6 stakeholders below</strong> — their satisfaction after each wave affects your final score. Read their demands.</span></div>
+    <div class="ruleRow highlight"><span class="rIcon">🎯</span><span class="rTxt"><strong>When ready, hit ▶ Simulate</strong> to test your design against 3 escalating disaster waves. Good luck!</span></div>
+    <div class="covLegend">
+      <span style="font-weight:600;color:var(--txt)">Grid colors:</span>
+      <span class="covItem"><span class="covDot" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4)"></span> ⚡ Power only</span>
+      <span class="covItem"><span class="covDot" style="background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4)"></span> ❄️ Cooling only</span>
+      <span class="covItem"><span class="covDot" style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4)"></span> ✅ Both — place racks here!</span>
+      <span class="covItem"><span class="covDot" style="background:rgba(59,130,246,.1);border:2px dashed rgba(59,130,246,.4)"></span> Hover preview</span>
+      <span style="margin-left:auto;font-weight:700;color:var(--cy)">$80 budget · 6 min · 10×7 grid</span>
+    </div>
+  </div>
+  <div class="pal" id="pal"></div>
+  <div class="gridArea"><div class="gridWrap"><div class="grid" id="bG"></div></div><div class="roleStrip" id="roleStrip"></div></div>
+  <div class="ctxPanel" id="ctxPanel"><div class="ctxHdr"><span class="ctxIcon">💡</span><span class="ctxTitle" id="ctxTitle">Tips & Demands</span></div><div class="ctxBody" id="ctxBody"></div></div>
+</div></div>
+
+<!-- SIM -->
+<div id="sim" class="scr"><div class="sL">
+  <div class="topBar" style="grid-column:1"><div class="topL"><div class="tLo">SIMULATION</div><div><div class="hLb">Wave</div><div id="sW" style="font-family:var(--mn);font-weight:700;color:var(--cy)">—</div></div></div>
+  <div class="topR"><div style="text-align:right"><div class="hLb">Revenue</div><div id="sRv" style="font-family:var(--mn);font-weight:700;color:var(--gn)">$0</div></div><div style="text-align:right"><div class="hLb">Uptime</div><div id="sUp" style="font-family:var(--mn);font-weight:700;color:var(--cy)">100%</div></div></div></div>
+  <div class="rulesStrip" style="grid-column:1;grid-template-columns:1fr 1fr 1fr">
+    <div class="ruleRow"><span class="rIcon">⚡</span><span class="rTxt"><strong>Wave 1:</strong> Tests ⚡+❄️ coverage. Uncovered racks = instant death.</span></div>
+    <div class="ruleRow"><span class="rIcon">🔥</span><span class="rTxt"><strong>Wave 2:</strong> Heat wave. Cooling range halves. Edge racks overheat.</span></div>
+    <div class="ruleRow"><span class="rIcon">⚫</span><span class="rTxt"><strong>Wave 3:</strong> Grid fails. Only 🔋 UPS works. Fire spreads without 🧯.</span></div>
+    <div class="covLegend"><span style="font-weight:600">Progress:</span><div id="sPr" style="display:flex;gap:2px;align-items:center;flex:1"></div></div>
+  </div>
+  <div style="display:grid;grid-template-rows:1fr minmax(160px,auto);overflow:hidden"><div class="gridWrap"><div class="grid" id="sG"></div></div><div class="roleStrip" id="simRoleStrip"></div></div>
+  <div style="grid-row:1/-1;grid-column:2;display:flex;flex-direction:column;overflow:hidden">
+    <div class="ctxPanel" style="flex:1"><div class="ctxHdr"><span class="ctxIcon">📡</span><span class="ctxTitle">Simulation Briefing</span></div><div class="ctxBody" id="sCM"></div><div class="ctxAct" id="sCA"><button class="btn bP" id="sCBtn" onclick="simContinue()" style="width:100%">▶ Start</button></div></div>
+    <div class="ctxPanel" id="mentorPanel" style="flex:0 0 auto;max-height:180px;border-top:1px solid var(--bdr);display:none"><div class="ctxHdr"><span class="ctxIcon">🧠</span><span class="ctxTitle">Mentor Notes</span></div><div class="ctxBody" id="mentorBody" style="font-size:.68rem"></div></div>
+  </div>
+</div></div>
+<div class="wBn" id="wBn"><div class="wT" id="wT"></div><div class="wS" id="wS"></div></div>
+<div class="boOv" id="bo"></div>
+
+<!-- RESULTS -->
+<div id="results" class="scr">
+  <div class="rHd"><div class="rTi">Simulation Complete</div><div class="rSu" id="rBd"></div></div>
+  <div class="sB" id="rSc">0</div><div style="text-align:center;color:var(--dim);font-size:.65rem;margin-bottom:2px">Composite Score</div><div class="rTm" id="rTm"></div>
+  <div class="insBox"><div class="insT">👥 Stakeholder Satisfaction</div><div class="rSatG" id="rSatG"></div></div>
+  <canvas id="radar" width="260" height="260"></canvas>
+  <div class="dGrd" id="dGrd"></div>
+  <div class="insBox"><div class="insT">🔍 Wave Analysis</div><div class="insTx" id="iW"></div></div>
+  <div class="insBox"><div class="insT">📊 How Your Score Was Calculated</div><div class="insTx" id="iSc" style="font-size:.7rem"></div></div>
+  <div class="insBox"><div class="insT">🛠️ How To Improve</div><div class="insTx" id="iF"></div></div>
+  <div class="insBox"><div class="insT">📚 What You'll Learn in Training</div><div class="insTx" id="iL"></div></div>
+  <div class="rActs"><button class="btn bG" id="grB" onclick="pickMode('guided');startBuild()">🧠 Guided Replay</button><button class="btn bP" onclick="startBuild()">⟳ Again</button><button class="btn bO" onclick="goLB()">📋 Attempts</button></div>
+</div>
+
+<div id="lbScr" class="scr" style="padding:18px;align-items:center;max-width:680px;margin:0 auto;width:100%">
+  <div class="rHd"><div class="rTi">📋 Attempt Board</div><div class="rSu">Click to expand</div></div>
+  <div id="lbBd" style="width:100%"></div>
+  <div style="display:flex;gap:6px;margin-top:14px"><button class="btn bP" onclick="showS('welcome')">← Back</button><button class="btn bO bS" onclick="if(confirm('Clear?')){localStorage.removeItem('nxlb7');renderLB()}">Reset</button></div>
+</div>
+
+<div class="dGhost" id="dGh" style="display:none"></div>
+<div id="tileTip"></div>
+<div id="roleTip"></div>
+
+<script>
+const COLS=10,ROWS=7,BUDGET=80,BTIME=360;
+const DIMS=['Cost','Schedule','Uptime','Resilience','Safety','Sustainability','Circularity','Stakeholder'];
+const DHEX=['#3b82f6','#06b6d4','#22c55e','#a855f7','#ef4444','#10b981','#f59e0b','#ec4899'];
+const T={gen:{id:'gen',n:'Generator',i:'⚡',c:4,r:2,d:'Powers a 5×5 square area around it',range:'5×5 radius',real:'In real DCs, diesel generators cost $500K-$2M each and take 10 seconds to start during outages.',why:'Without power, servers are expensive paperweights.'},
+ups:{id:'ups',n:'UPS Battery',i:'🔋',c:3,r:1,d:'Backup power during grid outage',range:'3×3 radius',real:'Real UPS systems bridge the 10-second gap between grid failure and generator startup — those 10 seconds would crash every server.',why:'The grid WILL fail. UPS is your insurance policy.'},
+cool:{id:'cool',n:'Cooling Unit',i:'❄️',c:4,r:2,d:'Cools racks — halves in heat wave',range:'5×5 → 3×3 in W2',real:'Cooling is 30-40% of a data center\'s total energy bill. One Google DC uses as much water as a small city.',why:'Servers generate intense heat. Without cooling, they throttle and die within minutes.'},
+rack:{id:'rack',n:'Server Rack',i:'🖥️',c:2,r:0,d:'Earns revenue — needs both ⚡+❄️',range:'Needs coverage',real:'A single server rack can hold 42 servers worth $200K+, serving millions of users. But it earns $0 if it\'s offline.',why:'Racks are your revenue. But a dead rack earns nothing.'},
+fire:{id:'fire',n:'Fire System',i:'🧯',c:3,r:2,d:'Blocks fire spread in Wave 3',range:'5×5 block',real:'DC fires spread through cable trays under raised floors. Samsung lost an entire DC to fire in 2022 — $300M+ damage.',why:'Fire doesn\'t just destroy one rack — it cascades through interconnected systems.'},
+net:{id:'net',n:'Network Hub',i:'📡',c:2,r:2,d:'Connects racks for stakeholder score',range:'5×5 connect',real:'Network connectivity determines latency. Every millisecond of delay costs Amazon $1.6B/year in lost sales.',why:'An isolated rack can\'t serve users. Connectivity = value.'}};
+const TO=['gen','cool','ups','fire','rack','net'];
+const TC={gen:'var(--gA)',ups:'var(--gB)',cool:'var(--gC)',rack:'var(--gG)',fire:'var(--gR)',net:'rgba(168,85,247,.18)'};
+const TF={gen:'var(--am)',ups:'var(--bl)',cool:'var(--cy)',rack:'var(--gn)',fire:'var(--rd)',net:'var(--pu)'};
+
+const GHOST=[{r:0,c:4,t:'gen'},{r:3,c:1,t:'gen'},{r:3,c:8,t:'gen'},{r:2,c:3,t:'cool'},{r:2,c:6,t:'cool'},{r:4,c:3,t:'cool'},{r:4,c:6,t:'cool'},{r:2,c:4,t:'ups'},{r:2,c:5,t:'ups'},{r:4,c:4,t:'ups'},{r:4,c:5,t:'ups'},{r:3,c:2,t:'ups'},{r:3,c:7,t:'ups'},{r:1,c:4,t:'fire'},{r:5,c:5,t:'fire'},{r:3,c:4,t:'net'},{r:1,c:3,t:'rack'},{r:1,c:5,t:'rack'},{r:1,c:6,t:'rack'},{r:2,c:2,t:'rack'},{r:2,c:7,t:'rack'},{r:3,c:3,t:'rack'},{r:3,c:5,t:'rack'},{r:3,c:6,t:'rack'},{r:4,c:2,t:'rack'},{r:4,c:7,t:'rack'},{r:5,c:3,t:'rack'},{r:5,c:4,t:'rack'},{r:5,c:6,t:'rack'}];
+
+const ROLES=[
+  {id:'pm',av:'👨‍💼',bg:'#1e3a5f',nm:'Alex Chen',rl:'Project Manager',dims:[0,1],demand:'Efficient spend. No dead racks. On time.',intro:"I manage budget and timeline. Dead racks = wasted money."},
+  {id:'risk',av:'👩‍🔬',bg:'#3b1f5e',nm:'Dr. Patel',rl:'Risk Analyst',dims:[2,3],demand:'N+1 redundancy. Backup every system.',intro:"I model failures. Without redundancy, one failure cascades into total loss."},
+  {id:'sust',av:'👩‍🌾',bg:'#1a3a2a',nm:'Maya O.',rl:'Sustainability Lead',dims:[5,6],demand:'Balanced ratio. No over-building.',intro:"Over-densification wastes energy. I want ~50/50 infra-to-rack balance."},
+  {id:'owner',av:'👨‍💻',bg:'#3a2a1a',nm:'J. Crawford',rl:"Owner's Rep",dims:[0,7],demand:'Full package: UPS + fire + network.',intro:"Tenants pay for reliability. Half-measures lose contracts."},
+  {id:'ops',av:'👷‍♂️',bg:'#3a1a1a',nm:'Chief Rod.',rl:'Ops Lead',dims:[2,4],demand:'Fire suppression — mandatory.',intro:"My team's safety is non-negotiable. No fire protection = I won't operate."},
+  {id:'proc',av:'👩‍💼',bg:'#1a2a3a',nm:'Kim N.',rl:'Procurement',dims:[0,6],demand:'Center-place for max coverage/dollar.',intro:"Every tile should serve max cells. Center > edge, always."},
+];
+const TILE_ROLES={gen:['risk','proc'],cool:['sust','risk'],ups:['risk','owner'],fire:['ops','owner'],rack:['pm','owner'],net:['proc','owner']};
+const TILE_ROLE_SAYS={
+  gen:{risk:"Power backbone first!",proc:"Center it — max coverage!"},
+  cool:{sust:"Pair with generators!",risk:"Need cooling margin for W2."},
+  ups:{risk:"Critical for Wave 3!",owner:"Insurance for my investment!"},
+  fire:{ops:"Non-negotiable!",owner:"Protects everything!"},
+  rack:{pm:"Revenue — only if covered.",owner:"Only in green zones!"},
+  net:{proc:"Center for max value!",owner:"Tenants need connectivity!"}
+};
+
+const ORCH=[
+  {role:'risk',msg:"Dr. Patel demands zero single points of failure. Place <strong>3 Generators</strong> at the ghost positions.",tile:'gen',n:3},
+  {role:'sust',msg:"Maya needs balanced cooling. Place <strong>4 Cooling units</strong> in a diamond.",tile:'cool',n:4},
+  {role:'risk',msg:"Dr. Patel demands N+1 backup. Place <strong>6 UPS batteries</strong> adjacent to cooling.",tile:'ups',n:6},
+  {role:'ops',msg:"Chief Rodriguez won't operate without protection. Place <strong>2 Fire Systems</strong>.",tile:'fire',n:2},
+  {role:'proc',msg:"Kim wants connectivity. Place <strong>1 Network Hub</strong> at center.",tile:'net',n:1},
+  {role:'owner',msg:"Crawford wants revenue. Fill green zones with <strong>Racks</strong> — only ⚡+❄️ cells!",tile:'rack',n:13},
+];
+
+let S={},GM='blind',dragTile=null,orchIdx=0,simResolve=null,orchSelecting=false;
+function fresh(){return{name:'',grid:Array(ROWS).fill(0).map(()=>Array(COLS).fill(null)),sel:null,isRm:false,budget:BUDGET,bt:BTIME,bInt:null,simRun:false,simRev:0,simRA:0,simRT:0,simRS:0,simSc:Array(8).fill(50),ch:{gens:0,ups:0,cools:0,racks:0,fires:0,nets:0,total:0},w1D:0,w2D:0,w3D:0,mSh:{},pc:0,ls:Array(8).fill(50),roleSat:ROLES.map(()=>({w1:null,w2:null,w3:null,final:50}))}}
+const $=id=>document.getElementById(id);
+function showS(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');scrollTo(0,0)}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function dist(r1,c1,r2,c2){return Math.max(Math.abs(r1-r2),Math.abs(c1-c2))}
+function pickMode(m){GM=m;document.querySelectorAll('.mCd').forEach(el=>el.classList.toggle('sel',el.dataset.mode===m))}
+function toggleDt(id){const el=$(id);document.querySelectorAll('.dtP').forEach(p=>{if(p.id!==id)p.style.display='none'});el.style.display=el.style.display==='none'?'block':'none'}
+
+// ═══ CONTEXT PANEL (build phase) ═══
+function ctxMsg(text,cls='tip'){const d=document.createElement('div');d.className='cMsg '+cls;d.innerHTML=text;$('ctxBody').appendChild(d);$('ctxBody').scrollTop=$('ctxBody').scrollHeight}
+function ctxClear(){$('ctxBody').innerHTML=''}
+
+function initBuildCtx(){
+  ctxClear();
+  if(GM==='guided'){
+    $('ctxTitle').textContent='🧠 Mentor Guide';
+    ctxMsg("<strong>Welcome, engineer.</strong> The 6 stakeholders below have introduced themselves. Read their demands in their speech bubbles — we'll address each one step by step.",'tip');
+    ctxMsg("Follow the <strong>ghost outlines</strong> on the grid. I'll tell you which tile to drag next.",'tip');
+    // Role intros go to their OWN bubbles
+    setTimeout(()=>{ROLES.forEach(r=>{
+      showCloud(r.id,`"${r.intro}"`,4000);
+      ['b'].forEach(p=>{const bub=$(`bub_${p}_${r.id}`);
+        if(bub){const entry=document.createElement('div');entry.className='bEntry';entry.style.color='var(--dim)';
+          entry.textContent=`📢 "${r.intro}"`;bub.appendChild(entry);bub.scrollTop=bub.scrollHeight}})
+    })},300);
+  } else {
+    $('ctxTitle').textContent='💡 Learn & Build';
+    ctxMsg("<strong>Welcome!</strong> You're designing a data center floor — the kind of facility that powers Netflix, Google, and every AI. Every tile you place is a real engineering decision.",'tip');
+    ctxMsg("⚡❄️ <strong>Coverage:</strong> Generators and Cooling each protect a 5×5 area. Racks need BOTH. Green glow = covered. Red = dead on arrival.",'warn');
+    ctxMsg("🔋🧯 <strong>Redundancy:</strong> Wave 3 kills all generators. Only UPS batteries save racks. Fire systems block fire spread. Skipping these = guaranteed failure.",'warn');
+    ctxMsg("📐 <strong>Placement:</strong> A center generator covers 25 cells. Corner placement? Only 9. Position is everything.",'tip');
+    $('ctxBody').insertAdjacentHTML('beforeend','<div class="eduFact"><strong>Real-world fact:</strong> A Tier III facility costs $150-300M to build. One hour of downtime costs $300K+. Your design determines whether that happens.</div>');
+    ctxMsg("👇 <strong>Each stakeholder below speaks in real-time.</strong> Their speech bubbles react to your tile choices. Hover for details.",'tip');
+  }
+}
+
+// Build counter (in context panel)
+function updateBuildCounter(){
+  let box=$('buildCounter');
+  if(!box){box=document.createElement('div');box.id='buildCounter';box.style.cssText='padding:6px 8px;background:var(--crd);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:4px;font-size:.6rem;';
+    $('ctxBody').prepend(box)}
+  const ch=S.ch;
+  const budgetColor=S.budget<=15?'var(--rd)':S.budget<=30?'var(--am)':'var(--gn)';
+  box.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-weight:700">Build Summary</span><span style="font-family:var(--mn);color:${budgetColor};font-weight:700">$${S.budget} left</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">${[['⚡',ch.gens],['❄️',ch.cools],['🔋',ch.ups],['🧯',ch.fires],['📡',ch.nets],['🖥️',ch.racks]].map(([ic,n])=>`<span style="background:var(--bg);padding:1px 5px;border-radius:3px">${ic}${n}</span>`).join('')}</div>`;
+  $('bBd').style.color=budgetColor;
+}
+
+// Build warnings
+function ctxCheckBuild(){
+  updateBuildCounter();
+  const ch=S.ch;
+  if(ch.racks>=5&&ch.ups===0&&!S.mSh.noUps){S.mSh.noUps=true;ctxMsg("⚠️ <strong>No UPS!</strong> When grid fails in Wave 3, every rack without backup dies instantly. Place 🔋 UPS near rack clusters.",'warn')}
+  if(ch.racks>=5&&ch.fires===0&&!S.mSh.noFire){S.mSh.noFire=true;ctxMsg("⚠️ <strong>No fire systems!</strong> Fire spreads freely in Wave 3. Place 🧯 inside your rack zone.",'warn')}
+  if(ch.racks>ch.total*.7&&ch.racks>4&&!S.mSh.ratio){S.mSh.ratio=true;ctxMsg("⚠️ <strong>"+Math.round(ch.racks/ch.total*100)+"% racks.</strong> Too many! Target ~45%. Unprotected racks earn $0 after they die.",'warn')}
+  if(S.budget<=10&&!S.mSh.lowBud){S.mSh.lowBud=true;ctxMsg("💰 <strong>Budget low ($"+S.budget+").</strong> Protect what you have — one UPS is worth more than three unprotected racks.",'warn')}
+}
+
+// ═══ COVERAGE RADIUS PREVIEW ═══
+function showRadiusPreview(r,c,tile){
+  clearRadiusPreview();
+  if(!tile||tile==='rack')return;
+  const rad=T[tile].r;if(!rad)return;
+  for(let rr=Math.max(0,r-rad);rr<=Math.min(ROWS-1,r+rad);rr++){
+    for(let cc=Math.max(0,c-rad);cc<=Math.min(COLS-1,c+rad);cc++){
+      const el=gEl('bG',rr,cc);if(el){el.classList.add(rr===r&&cc===c?'radiusCenter':'radiusPreview')}
+    }
+  }
+}
+function clearRadiusPreview(){document.querySelectorAll('#bG .radiusPreview,#bG .radiusCenter').forEach(el=>el.classList.remove('radiusPreview','radiusCenter'))}
+
+// ═══ ROLES BAR ═══
+function renderRoles(targetId){
+  const target=$(targetId||'roleStrip');if(!target)return;
+  const px=targetId==='simRoleStrip'?'s':'b';
+  target.innerHTML=ROLES.map(r=>`<div class="rlCard" data-role="${r.id}" id="${px==='s'?'sr':'rc'}_${r.id}">
+    <div class="rlCloud" id="cloud_${px}_${r.id}"></div>
+    <div class="rlAv" style="background:${r.bg}">${r.av}</div>
+    <div class="rlTop"><span class="rlNm">${r.nm}</span><span class="rlRl">${r.rl}</span><div class="rlWaves"><div class="wvBadge" id="wv1_${px}_${r.id}">W1</div><div class="wvBadge" id="wv2_${px}_${r.id}">W2</div><div class="wvBadge" id="wv3_${px}_${r.id}">W3</div></div></div>
+    <div class="rlBubble" id="bub_${px}_${r.id}"><div class="bEntry bDemand">"${r.demand}"</div></div>
+  </div>`).join('');
+  // Role hover tooltips
+  target.querySelectorAll('.rlCard[data-role]').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{
+      const rid=el.dataset.role;const r=ROLES.find(x=>x.id===rid);const tip=$('roleTip');
+      tip.innerHTML=`<div class="rtNm">${r.av} ${r.nm}</div><div class="rtDs">${r.intro}</div><div class="rtDm">Demand: "${r.demand}"</div><div class="rtDims">Scores: ${DIMS[r.dims[0]]} · ${DIMS[r.dims[1]]}</div>`;
+      tip.style.display='block';tip.style.left='-9999px';tip.style.top='0';
+      const rect=el.getBoundingClientRect();const tipH=tip.offsetHeight;
+      tip.style.left=Math.min(Math.max(rect.left,8),window.innerWidth-220)+'px';
+      tip.style.top=Math.max(rect.top-tipH-12,8)+'px'});
+    el.addEventListener('mouseleave',()=>{$('roleTip').style.display='none'})})}
+function setRoleSat(rid,score,reaction){
+  const emoji=score>=70?'😊':score>=40?'😐':'😤';
+  const cls=score>=70?'happy':score>=40?'mid':'angry';
+  // Determine which wave we're on
+  const ri=ROLES.findIndex(r=>r.id===rid);
+  const waveNum=S.roleSat[ri].w3!==null?3:S.roleSat[ri].w2!==null?2:1;
+  ['b','s'].forEach(prefix=>{
+    // Update wave badge
+    const badge=$(`wv${waveNum}_${prefix}_${rid}`);
+    if(badge){badge.textContent=`W${waveNum} ${score}`;badge.className='wvBadge scored '+cls}
+    // Append reaction to bubble
+    if(reaction){const bub=$(`bub_${prefix}_${rid}`);
+      if(bub){const entry=document.createElement('div');entry.className='bEntry bReact';
+        entry.style.color=score>=70?'var(--gn)':score>=40?'var(--am)':'var(--rd)';
+        entry.textContent=`${emoji} W${waveNum}: ${reaction}`;bub.appendChild(entry);bub.scrollTop=bub.scrollHeight}}
+  });
+  if(reaction)showCloud(rid,`${emoji} ${reaction}`,5000);
+}
+function highlightRole(id){
+  document.querySelectorAll('.rlCard').forEach(el=>{
+    const isMatch=el.id.endsWith('_'+id);el.classList.toggle('active',isMatch)})}
+
+function calcRoleSat(wave){
+  const ch=S.ch,sr=S.simRT>0?S.simRA/S.simRT:0,rr=ch.racks/(ch.total||1);
+  ROLES.forEach((r,i)=>{let sat=50;
+    if(wave===1){if(r.id==='pm')sat=clamp(50+(S.w1D===0?30:-S.w1D*10)+(ch.racks>3?10:0),0,100);if(r.id==='risk')sat=clamp(sr*100,0,100);if(r.id==='sust')sat=clamp(50+(rr<.6?25:-10)+(ch.cools>=2?15:0),0,100);if(r.id==='owner')sat=clamp(40+(ch.ups>0?15:0)+(ch.fires>0?15:0)+(ch.nets>0?15:0)+(sr>.8?15:0),0,100);if(r.id==='ops')sat=clamp(30+(ch.fires>=2?40:ch.fires*20)+(S.w1D===0?20:-10),0,100);if(r.id==='proc')sat=clamp(50+(ch.nets>0?20:0)+(rr<.6?15:-10),0,100)}
+    else if(wave===2){if(r.id==='pm')sat=clamp(50+(S.w2D===0?30:-S.w2D*12),0,100);if(r.id==='risk')sat=clamp(sr*100,0,100);if(r.id==='sust')sat=clamp(50+(S.w2D===0?30:-S.w2D*8)+(ch.cools>=4?15:0),0,100);if(r.id==='owner')sat=clamp(sr*80+(ch.ups>0?10:0)+(ch.fires>0?10:0),0,100);if(r.id==='ops')sat=clamp(40+(S.w2D===0?40:-S.w2D*15)+(ch.fires>=1?15:0),0,100);if(r.id==='proc')sat=clamp(sr*70+(ch.cools>=3?15:0)+(ch.nets>0?10:0),0,100)}
+    else{if(r.id==='pm')sat=clamp(30+sr*50+Math.min(S.simRev/40,20),0,100);if(r.id==='risk')sat=clamp(sr*100,0,100);if(r.id==='sust')sat=clamp(40+sr*30+(rr<.55?20:0)+(ch.cools>=4?10:0),0,100);if(r.id==='owner')sat=clamp(sr*50+Math.min(S.simRev/30,20)+(ch.ups>2?10:0)+(ch.fires>0?10:0)+(ch.nets>0?10:0),0,100);if(r.id==='ops')sat=clamp(sr*50+(ch.fires>=2?30:ch.fires*15)+(S.w3D===0?20:-10),0,100);if(r.id==='proc')sat=clamp(sr*40+(ch.nets>0?15:0)+Math.min(S.simRev/50,20)+(rr<.55?15:0),0,100)}
+    sat=Math.round(sat);S.roleSat[i][`w${wave}`]=sat;
+    if(wave===3)S.roleSat[i].final=Math.round((S.roleSat[i].w1+S.roleSat[i].w2+S.roleSat[i].w3)/3)})}
+
+// ═══ PALETTE ═══
+function renderPal(){let h='<div class="palSec">Infrastructure</div>';
+  TO.forEach(tid=>{const t=T[tid];
+    h+=`<div class="pTl" data-tile="${tid}" draggable="true" onclick="selT('${tid}')"><div class="pIc" style="background:${TC[tid]};color:${TF[tid]}">${t.i}</div><div class="pIn"><div class="pN">${t.n} <span class="pCost">$${t.c}</span></div><div class="pDesc">${t.d}</div><div class="pRange">${t.range}</div></div></div>`});
+  h+='<div class="palSec">Tools</div><div class="pRm" onclick="selRm()"><div class="pIc" style="background:var(--gR);color:var(--rd);font-size:11px">✕</div><div class="pIn"><div class="pN">Remove <span class="pCost" style="color:var(--dim)">refund</span></div></div></div>';
+  h+='<div class="cvBox"><div class="cvTitle">Coverage</div><div class="cvRow"><span>⚡+❄️ Ready</span><span class="cvVal g" id="ci1">0/0</span></div><div class="cvRow"><span>🔋 UPS backed</span><span class="cvVal" id="ci2">0/0</span></div><div class="cvRow"><span>🧯 Fire prot.</span><span class="cvVal" id="ci3">0/0</span></div></div>';
+  $('pal').innerHTML=h;
+  document.querySelectorAll('.pTl[draggable]').forEach(el=>{
+    el.addEventListener('dragstart',e=>{dragTile=el.dataset.tile;e.dataTransfer.setData('text/plain',dragTile);el.classList.add('dragging');const g=$('dGh');g.textContent=T[dragTile].i;g.style.display='block';e.dataTransfer.setDragImage(g,14,14);setTimeout(()=>g.style.display='none',0)});
+    el.addEventListener('dragend',()=>{el.classList.remove('dragging');dragTile=null;clearRadiusPreview()})});
+  // Tile hover tooltips
+  document.querySelectorAll('.pTl[data-tile]').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{
+      const tid=el.dataset.tile;const t=T[tid];const tip=$('tileTip');
+      const says=TILE_ROLE_SAYS[tid]||{};const relRoles=(TILE_ROLES[tid]||[]).map(rid=>ROLES.find(x=>x.id===rid));
+      const roleHtml=relRoles.length?'<div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06);font-size:.62rem;color:var(--mut)">STAKEHOLDERS:</div>'+relRoles.map(r=>`<div style="display:flex;align-items:center;gap:4px;padding:2px 0;font-size:.65rem"><span>${r.av}</span><span style="font-weight:700;color:var(--cy)">${r.nm}:</span><span style="color:var(--am)">"${says[r.id]||r.demand}"</span></div>`).join(''):'';
+      tip.innerHTML=`<div class="ppNm">${t.i} ${t.n} <span style="color:var(--gn)">$${t.c}</span></div><div class="ppRng">${t.range}</div><div class="ppDs">${t.d}</div><div class="ppFact eduFact">${t.real}</div><div class="ppWhy">⚡ ${t.why}</div>${roleHtml}`;
+      const rect=el.getBoundingClientRect();
+      tip.style.left=Math.min(rect.right+10,window.innerWidth-260)+'px';
+      tip.style.top=Math.max(rect.top,8)+'px';
+      tip.style.display='block'});
+    el.addEventListener('mouseleave',()=>{$('tileTip').style.display='none'})})}
+// ═══ ROLE SPEECH CLOUDS ═══
+let cloudTimers={};
+function showCloud(rid,text,duration){
+  ['b','s'].forEach(p=>{
+    const cl=$(`cloud_${p}_${rid}`);if(!cl)return;
+    cl.textContent=text;cl.classList.add('show');
+  });
+  if(cloudTimers[rid])clearTimeout(cloudTimers[rid]);
+  cloudTimers[rid]=setTimeout(()=>hideCloud(rid),duration||3500);
+}
+function hideCloud(rid){['b','s'].forEach(p=>{const cl=$(`cloud_${p}_${rid}`);if(cl)cl.classList.remove('show')})}
+function hideAllClouds(){ROLES.forEach(r=>hideCloud(r.id))}
+
+function selT(tid){S.sel=tid;S.isRm=false;document.querySelectorAll('.pTl').forEach(el=>el.classList.toggle('sel',el.dataset.tile===tid));document.querySelectorAll('.pRm').forEach(el=>el.classList.remove('sel'));
+  if(orchSelecting)return;
+  // Highlight related roles
+  const rids=TILE_ROLES[tid]||[];
+  document.querySelectorAll('.rlCard').forEach(el=>{
+    const isMatch=rids.some(rid=>el.id.endsWith('_'+rid));
+    el.classList.toggle('active',isMatch);
+  });
+}
+function selRm(){S.sel=null;S.isRm=true;document.querySelectorAll('.pTl').forEach(el=>el.classList.remove('sel'));document.querySelectorAll('.pRm').forEach(el=>el.classList.add('sel'));clearRadiusPreview()}
+
+// ═══ GRID ═══
+const ROWLBL='ABCDEFG';
+function cellId(r,c){return ROWLBL[r]+(c+1)}
+
+function renderGrid(){let h='<div class="gLabel"></div>';
+  for(let c=0;c<COLS;c++)h+=`<div class="gLabel col">${c+1}</div>`;
+  for(let r=0;r<ROWS;r++){h+=`<div class="gLabel row">${ROWLBL[r]}</div>`;
+    for(let c=0;c<COLS;c++)h+=`<div class="cell" data-r="${r}" data-c="${c}" data-id="${cellId(r,c)}" onmouseenter="hC(${r},${c})" onmouseleave="uC(${r},${c})" onclick="cC(${r},${c})"><div class="cG"></div></div>`}
+  $('bG').innerHTML=h;
+  document.querySelectorAll('#bG .cell').forEach(cell=>{
+    cell.addEventListener('dragover',e=>{e.preventDefault();const r=+cell.dataset.r,c=+cell.dataset.c;if(!S.grid[r][c]&&dragTile&&S.budget>=T[dragTile].c){cell.classList.add('dragover');showRadiusPreview(r,c,dragTile)}else cell.classList.add('noplace')});
+    cell.addEventListener('dragleave',()=>{cell.classList.remove('dragover','noplace');clearRadiusPreview()});
+    cell.addEventListener('drop',e=>{e.preventDefault();cell.classList.remove('dragover','noplace');clearRadiusPreview();const tid=e.dataTransfer.getData('text/plain');if(tid)place(+cell.dataset.r,+cell.dataset.c,tid)})});
+  if(GM==='guided')GHOST.forEach(g=>{const c=gEl('bG',g.r,g.c);c.classList.add('ghost');c.dataset.ghost=T[g.t].i})}
+function gEl(gid,r,c){return document.querySelector(`#${gid} .cell[data-r="${r}"][data-c="${c}"]`)}
+function hC(r,c){if(S.simRun)return;const cl=gEl('bG',r,c);if(S.isRm){if(S.grid[r][c])cl.classList.add('noplace');return}
+  if(!S.sel)return;if(S.grid[r][c]||S.budget<T[S.sel].c){cl.classList.add('noplace');return}
+  cl.classList.add('preview');showRadiusPreview(r,c,S.sel)}
+function uC(r,c){gEl('bG',r,c).classList.remove('preview','noplace');clearRadiusPreview()}
+function cC(r,c){if(S.simRun)return;if(S.isRm||(S.grid[r][c]&&!S.sel)){rmT(r,c);return}if(S.sel)place(r,c,S.sel)}
+function place(r,c,tid){if(S.grid[r][c]||S.budget<T[tid].c)return;S.grid[r][c]=tid;S.budget-=T[tid].c;S.pc++;
+  const cl=gEl('bG',r,c);cl.innerHTML=`<div class="cG"></div><div class="tI">${T[tid].i}</div><div class="tN">${T[tid].n}</div>`;cl.classList.add('occupied');cl.style.animation='none';cl.offsetHeight;cl.style.animation='popIn .2s ease';
+  upAll();ctxCheckBuild();if(GM==='guided')chkOrch()}
+function rmT(r,c){const tid=S.grid[r][c];if(!tid)return;S.grid[r][c]=null;S.budget+=T[tid].c;const cl=gEl('bG',r,c);cl.innerHTML='<div class="cG"></div>';cl.className='cell';
+  if(GM==='guided'){const gp=GHOST.find(g=>g.r===r&&g.c===c);if(gp){cl.classList.add('ghost');cl.dataset.ghost=T[gp.t].i}}upAll()}
+function upAll(){upCov();$('bBd').textContent=S.budget;$('bRk').textContent=S.ch.racks;updateBuildCounter();if(GM==='guided')updLD()}
+
+function upCov(){
+  let rks=[],pw=new Set(),cl=new Set(),up=new Set(),fr=new Set();
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const tid=S.grid[r][c];if(!tid)continue;if(tid==='rack')rks.push([r,c]);const t=T[tid];if(t.r>0)for(let rr=Math.max(0,r-t.r);rr<=Math.min(ROWS-1,r+t.r);rr++)for(let cc=Math.max(0,c-t.r);cc<=Math.min(COLS-1,c+t.r);cc++){if(tid==='gen')pw.add(rr+','+cc);if(tid==='ups'){pw.add(rr+','+cc);up.add(rr+','+cc)}if(tid==='cool')cl.add(rr+','+cc);if(tid==='fire')fr.add(rr+','+cc)}}
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const el=gEl('bG',r,c);if(!el)continue;const k=r+','+c;el.classList.remove('hasPower','hasCool','hasBoth','rOK','rBD');const hp=pw.has(k),hc=cl.has(k);if(hp&&hc)el.classList.add('hasBoth');else if(hp)el.classList.add('hasPower');else if(hc)el.classList.add('hasCool');if(S.grid[r][c]==='rack')el.classList.add(hp&&hc?'rOK':'rBD')}
+  S.ch={gens:0,ups:0,cools:0,racks:rks.length,fires:0,nets:0,total:0};
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const t=S.grid[r][c];if(!t)continue;S.ch.total++;if(t==='gen')S.ch.gens++;if(t==='ups')S.ch.ups++;if(t==='cool')S.ch.cools++;if(t==='fire')S.ch.fires++;if(t==='net')S.ch.nets++}
+  let nB=0,nU=0,nF=0;rks.forEach(([r,c])=>{const k=r+','+c;if(pw.has(k)&&cl.has(k))nB++;if(up.has(k))nU++;if(fr.has(k))nF++});
+  $('ci1').textContent=nB+'/'+rks.length;$('ci1').className='cvVal '+(nB>=rks.length&&rks.length?'g':nB?'y':'r');
+  $('ci2').textContent=nU+'/'+rks.length;$('ci3').textContent=nF+'/'+rks.length}
+
+// Guided: live dash in context panel
+function updLD(){if(GM!=='guided')return;
+  // Remove existing bars, add fresh
+  const existing=$('ldBars');if(!existing){const wrap=document.createElement('div');wrap.id='ldBars';
+    let h='<div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--bdr)"><div class="palSec">Live Score</div>';
+    DIMS.forEach((d,i)=>{h+=`<div class="ldBar"><span class="ldLb">${d}</span><div class="ldBg"><div class="ldFl" id="lb${i}" style="width:50%;background:${DHEX[i]}"></div></div><span class="ldVl" id="lv${i}" style="color:${DHEX[i]}">50</span></div>`});
+    h+='</div>';wrap.innerHTML=h;$('ctxBody').appendChild(wrap)}
+  const ch=S.ch,t=ch.total||1,rr=ch.racks/t;const ls=S.ls;
+  ls[0]=clamp(35+ch.racks*4+(ch.racks>8?10:0),10,95);ls[1]=clamp(55+(t>3?10:0)+(t>10?10:0),30,88);ls[2]=clamp(25+ch.gens*12+ch.cools*12,10,98);ls[3]=clamp(15+ch.ups*14+ch.fires*10,10,100);ls[4]=clamp(20+ch.fires*25+(rr<.55?20:-5),10,100);ls[5]=clamp(30+(ch.cools>=4?25:ch.cools*8)+(rr<.55?25:-5),10,95);ls[6]=clamp(30+ch.nets*20+(t>10?20:10),10,95);ls[7]=clamp(30+(ch.ups>2?10:0)+(ch.fires>0?10:0)+(ch.nets>0?10:0)+(ch.racks>2?10:0),10,95);
+  DIMS.forEach((d,i)=>{const v=Math.round(ls[i]);const b=$('lb'+i),vl=$('lv'+i);if(b)b.style.width=v+'%';if(vl)vl.textContent=v})}
+
+// Orchestration
+function advOrch(){if(GM!=='guided'||orchIdx>=ORCH.length)return;const s=ORCH[orchIdx];highlightRole(s.role);
+  orchSelecting=true;selT(s.tile);orchSelecting=false;
+  const r=ROLES.find(x=>x.id===s.role);
+  // Role speaks through their OWN cloud + bubble
+  showCloud(r.id,`💬 ${s.msg.replace(/<[^>]+>/g,'')}`,6000);
+  ['b','s'].forEach(p=>{const bub=$(`bub_${p}_${r.id}`);
+    if(bub){const entry=document.createElement('div');entry.className='bEntry bReact';entry.style.color='var(--cy)';
+      entry.textContent=`🧠 Step ${orchIdx+1}: ${s.msg.replace(/<[^>]+>/g,'')}`;bub.appendChild(entry);bub.scrollTop=bub.scrollHeight}});
+  // Only mentor instruction in main panel
+  ctxMsg(`<div style="font-size:.68rem;font-weight:700;color:var(--cy);margin-bottom:3px">🧠 MENTOR — Step ${orchIdx+1}/${ORCH.length}</div>💡 Drag ${T[s.tile].i} <strong>${T[s.tile].n}</strong> to the ghost outlines on the grid.`,'tip')}
+function chkOrch(){if(GM!=='guided'||orchIdx>=ORCH.length)return;const s=ORCH[orchIdx];const m={gen:'gens',cool:'cools',ups:'ups',fire:'fires',net:'nets',rack:'racks'};
+  let cum=0;for(let i=0;i<=orchIdx;i++)if(ORCH[i].tile===s.tile)cum+=ORCH[i].n;
+  if(S.ch[m[s.tile]]>=cum){orchIdx++;if(orchIdx<ORCH.length)setTimeout(advOrch,500);else ctxMsg("✅ <strong>All demands met!</strong> Hit ▶ Simulate to test your Fortress.",'success')}}
+
+function startBT(){S.bt=BTIME;upBT();S.bInt=setInterval(()=>{S.bt--;upBT();if(S.bt<=0){clearInterval(S.bInt);launchSim()}},1000)}
+function upBT(){const m=Math.floor(S.bt/60),s=S.bt%60;const el=$('bTm');el.textContent=m+':'+String(s).padStart(2,'0');el.className='hTm'+(S.bt<=45?' danger':S.bt<=120?' warn':'')}
+
+function startBuild(){S=fresh();S.name=$('pName').value.trim()||'Builder';orchIdx=0;
+  $('mTg2').textContent=GM==='guided'?'🧠 GUIDED':'🎯 BLIND';$('mTg2').className='mTg2 '+(GM==='guided'?'gd':'bl');
+  renderPal();renderGrid();renderRoles('roleStrip');upAll();initBuildCtx();showS('build');startBT();
+  if(GM==='guided')setTimeout(advOrch,1200)}
+
+// ═══ SIM ═══
+function chatMsg(text,cls='narrator'){const d=document.createElement('div');d.className='cMsg '+cls;d.innerHTML=text;$('sCM').appendChild(d);$('sCM').scrollTop=$('sCM').scrollHeight}
+function chatRole(role,text,sat,satCls){const r=ROLES.find(x=>x.id===role);
+  const d=document.createElement('div');d.className='cMsg role';
+  d.innerHTML=`<div class="rmNm">${r.av} ${r.nm} — ${r.rl}</div>${text}${sat!==undefined?`<div class="rmSat ${satCls}">${satCls==='happy'?'😊':satCls==='mid'?'😐':'😤'} Satisfaction: ${sat}/100</div>`:''}`
+  ;$('sCM').appendChild(d);$('sCM').scrollTop=$('sCM').scrollHeight}
+function chatBtn(text){$('sCBtn').textContent=text;$('sCBtn').disabled=false}
+function mentorNote(text){if(GM!=='guided')return;const mb=$('mentorBody');if(!mb)return;
+  const d=document.createElement('div');d.className='cMsg tip';d.innerHTML=text;mb.appendChild(d);mb.scrollTop=mb.scrollHeight}
+function waitForUser(){return new Promise(r=>{simResolve=r;$('sCBtn').disabled=false})}
+function simContinue(){if(simResolve){$('sCBtn').disabled=true;const r=simResolve;simResolve=null;r()}}
+
+const SP=['🏗️ Build','⚡ W1','🔥 W2','⚫ W3','📊 Done'];
+function renderSP(ai){$('sPr').innerHTML=SP.map((s,i)=>`<div class="spS ${i<ai?'done':i===ai?'active':''}">`+`<div class="spD">${i<ai?'✓':i===ai?'▸':i+1}</div><span>${s}</span></div>${i<SP.length-1?'<span class="spA">→</span>':''}`).join('')}
+
+function launchSim(){
+  // Readiness check
+  if(S.ch.racks===0){ctxMsg("⚠️ <strong>No racks placed!</strong> You need at least 1 server rack to generate revenue. Place 🖥️ racks in green-glow zones.",'warn');return}
+  if(S.ch.total<3){ctxMsg("⚠️ <strong>Too few tiles.</strong> Place infrastructure and racks before simulating.",'warn');return}
+  if(S.bInt)clearInterval(S.bInt);const bt=BTIME-S.bt;S.simRun=true;upCov();
+  let h='<div class="gLabel"></div>';for(let c=0;c<COLS;c++)h+=`<div class="gLabel col">${c+1}</div>`;
+  for(let r=0;r<ROWS;r++){h+=`<div class="gLabel row">${ROWLBL[r]}</div>`;for(let c=0;c<COLS;c++){const tid=S.grid[r][c];h+=`<div class="cell${tid?' occupied':''}" data-r="${r}" data-c="${c}" data-id="${cellId(r,c)}">${tid?`<div class="cG"></div><div class="tI">${T[tid].i}</div><div class="tN">${T[tid].n}</div>`:'<div class="cG"></div>'}</div>`}}
+  $('sG').innerHTML=h;$('sCM').innerHTML='';renderSP(0);renderRoles('simRoleStrip');
+  // Show mentor panel in guided mode
+  const mp=$('mentorPanel');if(mp)mp.style.display=GM==='guided'?'flex':'none';
+  if(GM==='guided'){const mb=$('mentorBody');if(mb)mb.innerHTML='<div class="cMsg tip"><strong>🧠 Watching your design under stress.</strong> I\'ll explain what each wave tests and why it matters for real DC projects.</div>'}
+  showS('sim');runSim(bt)}
+
+async function runSim(bt){
+  const w=ms=>new Promise(r=>setTimeout(r,ms));
+  let rks=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(S.grid[r][c]==='rack')rks.push({r,c,alive:true,pow:false,cool:false,ups:false,fp:false});
+  S.simRT=rks.length;S.simRA=rks.length;S.simRev=0;
+  function calc(hC,bo){let pw=new Set(),cl=new Set(),up=new Set(),fr=new Set();
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const tid=S.grid[r][c];if(!tid)continue;const t=T[tid];
+      if(tid==='gen'&&!bo)for(let rr=Math.max(0,r-t.r);rr<=Math.min(ROWS-1,r+t.r);rr++)for(let cc=Math.max(0,c-t.r);cc<=Math.min(COLS-1,c+t.r);cc++)pw.add(rr+','+cc);
+      if(tid==='ups'){const rd=t.r;for(let rr=Math.max(0,r-rd);rr<=Math.min(ROWS-1,r+rd);rr++)for(let cc=Math.max(0,c-rd);cc<=Math.min(COLS-1,c+rd);cc++){up.add(rr+','+cc);if(bo)pw.add(rr+','+cc)}}
+      if(tid==='cool'){const rd=hC?1:t.r;for(let rr=Math.max(0,r-rd);rr<=Math.min(ROWS-1,r+rd);rr++)for(let cc=Math.max(0,c-rd);cc<=Math.min(COLS-1,c+rd);cc++)cl.add(rr+','+cc)}
+      if(tid==='fire')for(let rr=Math.max(0,r-t.r);rr<=Math.min(ROWS-1,r+t.r);rr++)for(let cc=Math.max(0,c-t.r);cc<=Math.min(COLS-1,c+t.r);cc++)fr.add(rr+','+cc)}
+    rks.forEach(rk=>{if(!rk.alive)return;const k=rk.r+','+rk.c;rk.pow=pw.has(k);rk.cool=cl.has(k);rk.ups=up.has(k);rk.fp=fr.has(k)});return{pw,cl,up,fr}}
+  function kill(rk,cls){rk.alive=false;S.simRA--;gEl('sG',rk.r,rk.c).classList.remove('online','heating');gEl('sG',rk.r,rk.c).classList.add(cls)}
+  function hud(){$('sRv').textContent='$'+S.simRev;$('sUp').textContent=S.simRT?Math.round(S.simRA/S.simRT*100)+'%':'—'}
+
+  // BRIEFING
+  chatMsg("<strong>🏢 Your Tier III Data Center is built.</strong> Time to see if it meets the 99.982% uptime SLA. In real life, this test happens every day — the difference is you can't redesign after a failure.",'narrator');await w(1200);
+  chatMsg("<strong>⚡ Wave 1 — Normal Operations:</strong> Tests basic ⚡+❄️ coverage. Any rack without both power AND cooling is dead on arrival. <em>In real DCs, this is Day 1 commissioning — the first time you turn everything on.</em>",'narrator');await w(800);
+  chatBtn('▶ Run Wave 1 — Power On');await waitForUser();
+
+  // W1
+  renderSP(1);showWv('⚡ Online','Wave 1','var(--gn)');await w(1600);hideWv();$('sW').textContent='1/3';
+  calc(false,false);rks.forEach(rk=>{if(rk.alive&&rk.pow&&rk.cool)gEl('sG',rk.r,rk.c).classList.add('online')});await w(400);
+  const d1=rks.filter(r=>!r.pow||!r.cool);S.w1D=d1.length;d1.forEach(rk=>kill(rk,'overheated'));
+  if(d1.length){const cells=d1.map(rk=>`<strong>${cellId(rk.r,rk.c)}</strong>`).join(', ');
+    chatMsg(`<strong>${d1.length} rack(s) dead on arrival</strong> at ${cells} — no ⚡+❄️ coverage. $${d1.length*2} wasted. <em>In real DCs, this is discovered during commissioning — racks that cost $200K each, sitting dark on Day 1.</em>`,'danger')}
+  else chatMsg(`<strong>All ${rks.length} online!</strong> Full coverage verified. ✓ <em>This is what a successful commissioning looks like — every system powered, cooled, and operational.</em>`,'success');
+  mentorNote(S.w1D?`<strong>Lesson:</strong> Every rack without ⚡+❄️ coverage is wasted money. The fortress pattern ensures zero dead racks by placing infrastructure core FIRST.`:`<strong>Excellent.</strong> Full coverage means your infrastructure placement was sound. In real DCs, this saves $200K+ per rack.`);
+  for(let i=0;i<4;i++){S.simRev+=rks.filter(r=>r.alive).length*2;hud();await w(350)}
+  await w(400);calcRoleSat(1);
+  const W1_REACT={pm:["Budget efficiency looks solid.","Some racks wasted. Tighten the spend.","Unacceptable waste — dead racks cost us."],
+    risk:["All systems redundant. Excellent.","Some gaps in coverage. Acceptable risk.","Major single points of failure. I can't sign off."],
+    sust:["Good balance. Sustainable design.","Ratio could improve.","Over-densified. This wastes resources."],
+    owner:["Tenants will trust this facility.","Missing some protection layers.","Incomplete package. Tenants will walk."],
+    ops:["My team can operate this safely.","Manageable, but I have concerns.","I refuse to operate this floor."],
+    proc:["Good value per dollar.","Acceptable allocation.","Poor placement efficiency."]};
+  for(let ri=0;ri<ROLES.length;ri++){const r=ROLES[ri];const sat=S.roleSat[ri].w1;const idx=sat>=70?0:sat>=40?1:2;
+    setRoleSat(r.id,sat,W1_REACT[r.id][idx]);await w(500)}
+  await w(400);
+  chatMsg(`<strong>Wave 1 complete.</strong> ${S.simRA}/${S.simRT} racks alive. Revenue: $${S.simRev}.<br><em>In real DCs, this is the commissioning handoff — "your facility is live." But the real test comes when things go wrong...</em>`,'narrator');
+  await w(800);
+  chatMsg("<strong>🔥 Wave 2 — Heat Wave:</strong> Cooling radius halves (5×5→3×3). Racks at the edge overheat. <em>Real-world: summer heat spikes reduce cooling efficiency by 30-50%. This happens every year.</em>",'warn');await w(600);
+  chatBtn('▶ Run Wave 2 — Heat Wave');await waitForUser();
+
+  // W2
+  renderSP(2);showWv('🔥 Heat Wave','Cooling halved','var(--am)');await w(1600);hideWv();$('sW').textContent='2/3';
+  calc(true,false);await w(400);const hv=rks.filter(r=>r.alive&&!r.cool);S.w2D=hv.length;
+  hv.forEach(rk=>gEl('sG',rk.r,rk.c).classList.add('heating'));await w(1000);hv.forEach(rk=>kill(rk,'overheated'));
+  if(hv.length){const cells=hv.map(rk=>`<strong>${cellId(rk.r,rk.c)}</strong>`).join(', ');
+    chatMsg(`<strong>${hv.length} rack(s) overheated</strong> at ${cells}. Edge cooling failed. <em>This is "single point of cooling failure" — summer heat waves cause exactly this.</em>`,'danger')}
+  else chatMsg(`<strong>Zero thermal shutdowns!</strong> Your cooling had N+1 margin — even at half capacity, every rack stayed cool. <em>This is the standard real Tier III DCs are built to.</em>`,'success');
+  mentorNote(S.w2D?`<strong>Lesson:</strong> The fortress pattern places 4 cooling units in a diamond — so even when radius halves, every rack stays within range. Your cooling was too sparse.`:`<strong>N+1 validated.</strong> Your cooling margin survived the stress test. This is exactly what Tier III certification requires.`);
+  for(let i=0;i<3;i++){S.simRev+=rks.filter(r=>r.alive).length;hud();await w(350)}
+  await w(400);calcRoleSat(2);
+  const W2_REACT={pm:["Still on track. No financial damage.","Thermal losses hurt the bottom line.","This is hemorrhaging money."],
+    risk:["Cooling margin held. N+1 validated.","Edge cases failed. Concerning.","Cascade thermal failure. Predicted this."],
+    sust:["Efficient cooling placement.","Marginal — too close to the edge.","Cooling design is fundamentally flawed."],
+    owner:["Facility holding strong.","Starting to worry about my investment.","Tenants are calling. This is bad."],
+    ops:["Operating within thermal limits.","Running hot. My team is stressed.","Thermal shutdowns everywhere. Dangerous."],
+    proc:["Infrastructure holding value.","Some waste surfacing.","Poor cooling ROI."]};
+  for(let ri=0;ri<ROLES.length;ri++){const r=ROLES[ri];const sat=S.roleSat[ri].w2;const idx=sat>=70?0:sat>=40?1:2;
+    setRoleSat(r.id,sat,W2_REACT[r.id][idx]);await w(500)}
+  await w(400);
+  chatMsg(`<strong>Wave 2 complete.</strong> ${S.simRA}/${S.simRT} still alive.<br><em>In the real world, heat waves pass. But grid failures don't give warning...</em>`,'narrator');
+  await w(800);
+  chatMsg("<strong>⚫ Wave 3 — Grid Outage + Fire:</strong> All generators fail. Only 🔋 UPS survives. Fire breaks out. <em>This is the $300K/hour scenario. In 2021, a Texas grid failure took down multiple DCs for days.</em>",'danger');await w(600);
+  chatBtn('▶ Run Wave 3 — Outage + Fire');await waitForUser();
+
+  // W3
+  renderSP(3);showWv('⚫ Grid Down','Outage + Fire','var(--rd)');await w(1200);
+  $('bo').classList.add('active');document.querySelectorAll('#sG .cell').forEach(c=>c.classList.add('blackout'));
+  chatMsg('<strong>⚫ GRID FAILURE.</strong> All generators offline. <em>In 2021, the Texas winter storm took down multiple DCs for days. This is that moment — your design is the only thing between uptime and catastrophe.</em>','danger');await w(1500);hideWv();
+  const cov=calc(true,true);$('bo').classList.remove('active');$('sW').textContent='3/3';await w(300);
+  rks.forEach(rk=>{if(!rk.alive)return;const c=gEl('sG',rk.r,rk.c);c.classList.remove('blackout');if(rk.pow)c.classList.add('backupOn')});
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){if(!S.grid[r][c]||S.grid[r][c]==='rack')continue;gEl('sG',r,c).classList.remove('blackout')}
+  if(S.ch.ups>0){chatMsg(`🔋 UPS active — ${rks.filter(r=>r.alive&&r.pow).length} on backup.`,'success');await w(600)}
+  const np=rks.filter(r=>r.alive&&!r.pow);np.forEach(rk=>kill(rk,'overheated'));const w3p=np.length;
+  if(np.length){const cells=np.map(rk=>`<strong>${cellId(rk.r,rk.c)}</strong>`).join(', ');
+    chatMsg(`${np.length} rack(s) lost power at ${cells} — no UPS in range.`,'danger');await w(500)}
+  chatMsg('🔥 <strong>Fire detected!</strong>','danger');await w(500);
+  let fc=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(S.grid[r][c]&&!cov.fr.has(r+','+c))fc.push([r,c]);let fk=0;
+  if(!fc.length){chatMsg('🧯 Suppression contained fire! ✓','success');await w(400)}
+  else{const o=fc[Math.floor(Math.random()*fc.length)];let fs=new Set([o[0]+','+o[1]]);gEl('sG',o[0],o[1]).classList.add('onFire');
+    for(let s=0;s<2;s++){await w(700);let nf=[];fs.forEach(k=>{const[r,c]=k.split(',').map(Number);[[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(([nr,nc])=>{if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&S.grid[nr][nc]&&!fs.has(nr+','+nc)&&!cov.fr.has(nr+','+nc))nf.push([nr,nc])})});
+      nf.forEach(([r,c])=>{fs.add(r+','+c);gEl('sG',r,c).classList.add('onFire')});if(nf.length){const fcells=[...fs].map(k=>{const[r,c]=k.split(',').map(Number);return cellId(r,c)}).join(', ');chatMsg(`🔥 Fire spreading → ${fs.size} cells: ${fcells}`,'danger')}}
+    await w(500);const destroyedCells=[];fs.forEach(k=>{const[r,c]=k.split(',').map(Number);const rk=rks.find(x=>x.r===r&&x.c===c&&x.alive);if(rk){kill(rk,'destroyed');fk++;destroyedCells.push(cellId(r,c))}gEl('sG',r,c).classList.remove('onFire');gEl('sG',r,c).classList.add('destroyed')});
+    chatMsg(`Fire suppressed. ${fs.size} cells damaged${fk?`, <strong>${fk} racks destroyed</strong> at ${destroyedCells.join(', ')}`:''}.`,'danger')}
+  S.w3D=w3p+fk;hud();await w(600);
+  rks.forEach(rk=>{const c=gEl('sG',rk.r,rk.c);c.classList.remove('blackout','backupOn','heating');if(rk.alive)c.classList.add('survived')});
+  S.simRS=S.simRA;for(let i=0;i<3;i++){S.simRev+=S.simRA*3;hud();await w(300)}
+  const sr=S.simRT?Math.round(S.simRS/S.simRT*100):0;
+  chatMsg(`<strong>FINAL: ${S.simRS}/${S.simRT} survived (${sr}%). Revenue: $${S.simRev}</strong>`,sr>=80?'success':'warn');
+  await w(500);calcRoleSat(3);
+  await w(500);renderSP(4);
+  const W3_REACT={pm:["Efficient, resilient, profitable. I'd fund this again.","Room to improve, but a viable facility.","Financial disaster. Complete rebuild needed."],
+    risk:["This facility meets Tier III standards. Approved.","Partial resilience. Needs remediation.","Total failure. Every risk I flagged materialized."],
+    sust:["Sustainable, balanced, well-designed.","Acceptable with modifications.","Over-built and under-protected. Worst of both worlds."],
+    owner:["I'd sign a 10-year lease on this facility.","Workable but needs upgrades before tenants move in.","No investor would touch this. Start over."],
+    ops:["Safe, protected, operable. My team is ready.","We can work with this, but add fire protection.","I'm filing an incident report. This facility is condemned."],
+    proc:["Excellent value. Every dollar well spent.","Adequate, some waste.","Poor allocation. Money burned, literally."]};
+  for(let ri=0;ri<ROLES.length;ri++){const r=ROLES[ri];const sat=S.roleSat[ri].final;const idx=sat>=70?0:sat>=40?1:2;
+    setRoleSat(r.id,sat,W3_REACT[r.id][idx]);await w(600)}
+  chatMsg(`<strong>All 3 waves complete.</strong> Final survival: ${S.simRS}/${S.simRT}. Click below for your full score breakdown.`,'narrator');
+  chatBtn('📊 View Full Results');await waitForUser();computeR(bt)}
+function showWv(t,s,c){$('wT').textContent=t;$('wT').style.color=c;$('wS').textContent=s;$('wBn').classList.add('show')}
+function hideWv(){$('wBn').classList.remove('show')}
+
+// ═══ SCORING (ghost→~97) ═══
+function computeR(bt){
+  const ch=S.ch,tot=ch.total||1,sr=S.simRT>0?S.simRS/S.simRT:0,rr=ch.racks/tot;
+  let sc=S.simSc;
+  sc[0]=clamp(Math.round(35+(S.simRev/Math.max(BUDGET-S.budget,1))*12+(ch.racks>8?10:0)),0,100);
+  sc[1]=clamp(Math.round(40+(BTIME-bt)/BTIME*35+Math.min(tot*1.2,20)),0,100);
+  sc[2]=clamp(Math.round(sr*100),0,100);
+  sc[3]=clamp(Math.round(sr*40+Math.min(ch.ups*10,50)+Math.min(ch.fires*10,20)),0,100);
+  sc[4]=clamp(Math.round(30+Math.min(ch.fires*25,50)+(rr<.55?20:rr<.65?10:-5)),0,100);
+  sc[5]=clamp(Math.round(30+(ch.cools>=4?25:ch.cools*8)+(rr>.35&&rr<.55?25:rr<.65?15:-5)+(ch.gens>=2?10:0)),0,100);
+  sc[6]=clamp(Math.round(30+Math.min(ch.nets*20,30)+(tot>10?20:tot>5?10:0)+(rr>.35&&rr<.55?20:rr<.65?10:-5)),0,100);
+  sc[7]=clamp(Math.round(sr*40+Math.min(S.simRev/30,20)+(ch.ups>2)*10+(ch.fires>0)*10+(ch.nets>0)*10+(rr<.55)*10),0,100);
+  const avgRoleSat=Math.round(S.roleSat.reduce((a,r)=>a+r.final,0)/ROLES.length);
+  const dimAvg=Math.round(sc.reduce((a,b)=>a+b,0)/8);
+  const blended=Math.round(dimAvg*0.7+avgRoleSat*0.3);
+  const tb=Math.max(0,Math.round((1-bt/BTIME)*7));
+  const fs=clamp(blended+tb,0,100);S.simSc=sc;
+  let band,bc;if(fs>=80){band='Expert';bc='expert'}else if(fs>=65){band='Proficient';bc='proficient'}else if(fs>=45){band='Developing';bc='developing'}else{band='Novice';bc='novice'}
+  saveLB(S.name,fs,bt,band,GM);showS('results');
+  $('rBd').textContent=`${band} · ${S.name} · ${GM==='guided'?'Guided':'Blind'}`;$('rSc').textContent=fs;$('rSc').className='sB '+bc;
+  $('rTm').innerHTML=`Build: ${Math.floor(bt/60)}:${String(bt%60).padStart(2,'0')} · <span class="bonus">+${tb} bonus</span> · Roles: ${avgRoleSat}`;
+  $('grB').style.display=GM==='blind'?'inline-flex':'none';
+  $('rSatG').innerHTML=ROLES.map((r,i)=>{const sat=S.roleSat[i].final;const col=sat>=70?'var(--gn)':sat>=40?'var(--am)':'var(--rd)';
+    return`<div class="rSC"><div class="rsAv">${r.av}</div><div class="rsNm">${r.nm}</div><div class="rsRl">${r.rl}</div><div class="rsBr"><div style="width:${sat}%;background:${col}"></div></div><div class="rsVl" style="color:${col}">${sat>=70?'😊':sat>=40?'😐':'😤'} ${sat}</div></div>`}).join('');
+  let dh='';DIMS.forEach((d,i)=>{dh+=`<div class="dI"><div class="dL">${d}</div><div class="dV" style="color:${DHEX[i]}">${sc[i]}</div><div class="dBr"><div style="width:${sc[i]}%;background:${DHEX[i]}"></div></div></div>`});$('dGrd').innerHTML=dh;drawR(sc);genIns(fs,band)}
+
+function drawR(sc){const cv=$('radar'),cx=cv.getContext('2d'),W=260,H=260,x=W/2,y=H/2,R=90;cv.width=W;cv.height=H;cx.fillStyle='#111827';cx.fillRect(0,0,W,H);const n=8,st=Math.PI*2/n;
+[.25,.5,.75,1].forEach(r=>{cx.beginPath();for(let i=0;i<=n;i++){const a=i*st-Math.PI/2;cx.lineTo(x+Math.cos(a)*R*r,y+Math.sin(a)*R*r)}cx.closePath();cx.strokeStyle='rgba(42,54,84,.5)';cx.stroke()});
+for(let i=0;i<n;i++){const a=i*st-Math.PI/2;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+Math.cos(a)*R,y+Math.sin(a)*R);cx.strokeStyle='rgba(42,54,84,.3)';cx.stroke();cx.fillStyle=DHEX[i];cx.font='600 7px Outfit';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(DIMS[i],x+Math.cos(a)*(R+12),y+Math.sin(a)*(R+12))}
+cx.beginPath();for(let i=0;i<n;i++){const a=i*st-Math.PI/2;cx.lineTo(x+Math.cos(a)*R*(sc[i]/100),y+Math.sin(a)*R*(sc[i]/100))}cx.closePath();cx.fillStyle='rgba(59,130,246,.15)';cx.fill();cx.strokeStyle='#3b82f6';cx.lineWidth=2;cx.stroke();
+for(let i=0;i<n;i++){const a=i*st-Math.PI/2;const v=sc[i]/100;cx.beginPath();cx.arc(x+Math.cos(a)*R*v,y+Math.sin(a)*R*v,3,0,Math.PI*2);cx.fillStyle=DHEX[i];cx.fill()}}
+
+function genIns(score,band){
+  const ch=S.ch,sv=S.simRS,tot=S.simRT,sr=tot?Math.round(sv/tot*100):0;
+  let wh=[];
+  if(S.w1D)wh.push(`<div class="fxI bad"><div class="fxIc">⚡</div><div class="fxTx"><strong>W1: ${S.w1D} dead.</strong> No coverage.</div></div>`);else if(tot)wh.push(`<div class="fxI good"><div class="fxIc">✅</div><div class="fxTx"><strong>W1: All online.</strong></div></div>`);
+  if(S.w2D)wh.push(`<div class="fxI bad"><div class="fxIc">🔥</div><div class="fxTx"><strong>W2: ${S.w2D} overheated.</strong></div></div>`);else if(tot&&S.w1D<tot)wh.push(`<div class="fxI good"><div class="fxIc">✅</div><div class="fxTx"><strong>W2: Zero shutdowns.</strong></div></div>`);
+  if(S.w3D)wh.push(`<div class="fxI bad"><div class="fxIc">⚫</div><div class="fxTx"><strong>W3: ${S.w3D} destroyed.</strong></div></div>`);else if(tot&&sv===tot)wh.push(`<div class="fxI good"><div class="fxIc">🏆</div><div class="fxTx"><strong>W3: 100% survived!</strong></div></div>`);
+  $('iW').innerHTML=wh.join('');
+  let fx=[];if(ch.ups<4)fx.push(`<div class="fxI"><div class="fxIc">🔋</div><div class="fxTx"><strong>More UPS</strong> paired with cooling. Fortress uses 6.</div></div>`);
+  if(ch.fires<2)fx.push(`<div class="fxI"><div class="fxIc">🧯</div><div class="fxTx"><strong>Fire systems inside rack zone</strong>, not corners.</div></div>`);
+  if(ch.racks>0&&ch.racks/ch.total>.6)fx.push(`<div class="fxI"><div class="fxIc">⚖️</div><div class="fxTx"><strong>${Math.round(ch.racks/ch.total*100)}% racks</strong> — target ~45%.</div></div>`);
+  if(!fx.length)fx.push(`<div class="fxI good"><div class="fxIc">💯</div><div class="fxTx"><strong>Outstanding.</strong></div></div>`);$('iF').innerHTML=fx.join('');
+  // Transparent scoring
+  const sc=S.simSc;const avgRoleSat=Math.round(S.roleSat.reduce((a,r)=>a+r.final,0)/ROLES.length);
+  const dimAvg=Math.round(sc.reduce((a,b)=>a+b,0)/8);
+  $('iSc').innerHTML=`<div style="margin-bottom:8px">Your score is calculated from <strong>two components</strong>:</div>
+    <div class="fxI" style="border-left-color:var(--bl)"><div class="fxIc">📊</div><div class="fxTx"><strong>8-Dimension Average: ${dimAvg}/100</strong> (70% weight)<br>
+    ${DIMS.map((d,i)=>`${d}: <strong style="color:${DHEX[i]}">${sc[i]}</strong>`).join(' · ')}</div></div>
+    <div class="fxI" style="border-left-color:var(--pu)"><div class="fxIc">👥</div><div class="fxTx"><strong>Role Satisfaction Average: ${avgRoleSat}/100</strong> (30% weight)<br>
+    ${ROLES.map((r,i)=>`${r.av} ${S.roleSat[i].final}`).join(' · ')}</div></div>
+    <div class="fxI" style="border-left-color:var(--cy)"><div class="fxIc">🧮</div><div class="fxTx"><strong>Composite = (${dimAvg} × 0.7) + (${avgRoleSat} × 0.3) + time bonus = ${score}</strong><br>
+    <em style="color:var(--mut)">This mirrors real DC project evaluation: technical performance (dimensions) + stakeholder approval (roles) = project success.</em></div></div>`;
+  // Training connection — educational depth
+  $('iL').innerHTML=`<div class="eduFact" style="margin-bottom:8px"><strong>The gap between your blind and guided scores IS the learning.</strong> NEXUS-DC training explains the theory behind that gap across 18 modules, 6 professional roles, and 3 lifecycle phases.</div>
+    ${["The <strong>6 roles</strong> you met ("+ROLES.map(r=>r.nm).join(', ')+") map to real professionals on $500M+ DC projects. In training, you play AS each role — seeing the same decisions through 6 different lenses.",
+    "<strong>Cost-tunneling bias</strong> — maximizing racks while skipping infrastructure — is the #1 losing strategy. Training teaches you to recognize and overcome this bias using ISO 31000 frameworks.",
+    "The <strong>8 scoring dimensions</strong> (Cost, Schedule, Uptime, Resilience, Safety, Sustainability, Circularity, Stakeholder) are the real evaluation criteria used on $500M+ data center projects worldwide.",
+    "Each wave in this game corresponds to a <strong>real lifecycle challenge</strong>: Wave 1 = commissioning, Wave 2 = operational stress, Wave 3 = crisis management. Training covers all three phases in depth."
+    ].map(t=>"→ "+t).join('<br>')}`}
+
+// LB
+function getLB(){try{return JSON.parse(localStorage.getItem('nxlb7'))||[]}catch{return[]}}
+function saveLB(n,s,t,b,m){const lb=getLB();lb.push({n,s,t,b,m,ts:Date.now(),sc:S.simSc.slice(),ch:{...S.ch},w1D:S.w1D,w2D:S.w2D,w3D:S.w3D,sv:S.simRS,tot:S.simRT,rev:S.simRev,rsat:S.roleSat.map(r=>r.final)});
+  lb.sort((a,b)=>b.s-a.s||a.t-b.t);if(lb.length>50)lb.length=50;localStorage.setItem('nxlb7',JSON.stringify(lb))}
+function renderLB(){const lb=getLB();if(!lb.length){$('lbBd').innerHTML='<div style="text-align:center;padding:24px;color:var(--mut)">No attempts yet!</div>';return}
+  $('lbBd').innerHTML=lb.map((e,i)=>{const bc=e.b==='Expert'?'var(--gn)':e.b==='Proficient'?'var(--cy)':e.b==='Developing'?'var(--am)':'var(--rd)';const rc=i<3?['g','s','b'][i]:'';
+    const tm=`${Math.floor(e.t/60)}:${String(e.t%60).padStart(2,'0')}`;const dt=e.ts?new Date(e.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+    const dims=e.sc||Array(8).fill(50);const ch=e.ch||{};const rsat=e.rsat||[];
+    return`<div class="abCd" onclick="this.classList.toggle('open')"><div class="abH"><div class="abRk ${rc}">#${i+1}</div><div class="abInf"><span class="abNm">${e.n}</span><span class="abSc" style="color:${bc}">${e.s}</span><span class="abBd2" style="background:${bc.replace('var(','rgba(').replace(')',',0.15)')};color:${bc}">${e.b}</span><span class="abMt"><span>⏱${tm}</span><span>${e.m==='guided'?'🧠':'🎯'}</span><span>${dt}</span></span></div><span class="abAr">▸</span></div>
+    <div class="abBdy"><div class="abDms">${DIMS.map((d,j)=>`<div class="abDm"><div class="adL">${d}</div><div class="adV" style="color:${DHEX[j]}">${dims[j]||50}</div><div class="adBr"><div style="width:${dims[j]||50}%;background:${DHEX[j]}"></div></div></div>`).join('')}</div>
+    <div class="abWvs"><div class="abWv ${(e.w1D||0)===0?'ok':'bad'}">W1:${(e.w1D||0)===0?'✓':'✗'+e.w1D}</div><div class="abWv ${(e.w2D||0)===0?'ok':'bad'}">W2:${(e.w2D||0)===0?'✓':'✗'+e.w2D}</div><div class="abWv ${(e.w3D||0)===0?'ok':'bad'}">W3:${(e.w3D||0)===0?'✓':'✗'+e.w3D}</div></div>
+    ${rsat.length?'<div class="abBld">Roles: '+ROLES.map((r,j)=>`${r.av}${rsat[j]||'?'}`).join(' ')+'</div>':''}
+    <div class="abBld">${ch.gens||0}⚡ ${ch.cools||0}❄️ ${ch.ups||0}🔋 ${ch.fires||0}🧯 ${ch.nets||0}📡 ${ch.racks||0}🖥️ · $${e.rev||0}</div></div></div>`}).join('')}
+function goLB(){renderLB();showS('lbScr')}
+
+document.querySelectorAll('.mo').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('active')}));
+document.addEventListener('DOMContentLoaded',()=>{const p=$('pName');if(p)p.focus()});
+</script>
+</body>
+</html>

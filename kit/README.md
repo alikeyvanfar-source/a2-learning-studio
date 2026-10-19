@@ -76,9 +76,13 @@ A2.log.event('decision', { target: 'crane-location', value: 'NE corner', score: 
 A2.log.event('module_complete', { target: 'module-2', score: 88, duration_ms: 540000 });
 ```
 
+## Kit API notes (v1.0.4)
+
+- `scrubText()` finds self-introductions, sign-offs and names after cue words in any letter case ("my name is zed", "MY NAME IS ZED"), not only when the name is capitalised.
+
 ## Kit API notes (v1.0.3)
 
-- `A2.privacy.scrubText(value, max)` is for anything a learner types (comments, open answers, project labels): it runs `scrub()` and also removes self-introductions and sign-offs ("my name is …", "I'm …", "Thanks, …", "– Name"), names after "from/with/and" and ID cues ("PIN 4826", "netid jsmith12"). Default max 1000.
+- `A2.privacy.scrubText(value, max)` is for anything a learner types (comments, open answers, project labels): it runs `scrub()` and also removes self-introductions and sign-offs in any letter case ("my name is …", "i'm …", "thanks, …", "– name", "… here"), two- or three-word names after "from/with/and/this is", and ID cues ("PIN 4826", "netid jsmith12"). Ordinary words after a cue ("i'm confused", "this is broken") are kept. Default max 1000.
 - `A2.privacy.nameHints(text)` returns runs of two or three capitalised words that may be a person's name; the feedback form uses it for a one-time "this may include a name" check before saving.
 - `A2.privacy.redact(value)` registers a value typed this session (e.g. a certificate name); it is removed, as whole words in any case, from every later log entry and from JSON/CSV exports (`A2.privacy.redactKnown(text)`).
 - Toasts move to the top of the screen while the bottom position would cover the focused control (WCAG 2.4.11).

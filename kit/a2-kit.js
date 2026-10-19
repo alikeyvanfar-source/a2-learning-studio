@@ -1,5 +1,5 @@
 /* ==========================================================================
-   A² Kit · v1.0.1 · shared runtime for A² Learning Studio platforms
+   A² Kit · v1.0.2 · shared runtime for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.js (inlined into each
    platform between <!-- a2-kit:js --> markers by kit/sync.py).
@@ -21,7 +21,7 @@
   'use strict';
   if (window.A2 && window.A2.kit) return;
 
-  var VERSION = '1.0.1';
+  var VERSION = '1.0.2';
   var A2 = window.A2 = window.A2 || {};
   A2.kit = { version: VERSION };
 
@@ -146,13 +146,15 @@
       redactions.push(v);
       v.split(/[\s,]+/).forEach(function (part) { if (part.length >= 3) redactions.push(part); });
     },
-    scrub: function (value) {
+    /* max: longest string kept (default 240, the log field size) */
+    scrub: function (value, max) {
       if (value == null) return value;
       if (typeof value === 'number' || typeof value === 'boolean') return value;
       var s = typeof value === 'string' ? value : JSON.stringify(value);
       redactions.forEach(function (r) { if (r) s = s.split(r).join('[redacted]'); });
       RX.forEach(function (p) { s = s.replace(p[0], p[1]); });
-      return s.length > 240 ? s.slice(0, 237) + '...' : s;
+      var lim = typeof max === 'number' && max > 3 ? max : 240;
+      return s.length > lim ? s.slice(0, lim - 3) + '...' : s;
     }
   };
 
@@ -505,10 +507,12 @@
     toastWrap.appendChild(t);
     setTimeout(function () { t.remove(); }, ms || 3600);
   };
-  /* dialog({title, lead, body (html), actions:[{label, primary, danger, value, onClick}], onClose}) -> HTMLDialogElement */
+  /* dialog({title, lead, body (html), actions:[{label, primary, danger, value, onClick}], onClose, initialFocus}) -> HTMLDialogElement */
+  var dlgSeq = 0;
   ui.dialog = function (o) {
-    var d = h('dialog', { class: 'a2-dialog', 'aria-labelledby': 'a2dlg-t' });
-    var head = '<div class="a2-dialog-head"><div class="a2-grow"><h2 id="a2dlg-t">' + esc(o.title || '') + '</h2>' + (o.lead ? '<p>' + esc(o.lead) + '</p>' : '') + '</div>' +
+    var tid = 'a2dlg-t' + (++dlgSeq);
+    var d = h('dialog', { class: 'a2-dialog', 'aria-labelledby': tid });
+    var head = '<div class="a2-dialog-head"><div class="a2-grow"><h2 id="' + tid + '">' + esc(o.title || '') + '</h2>' + (o.lead ? '<p>' + esc(o.lead) + '</p>' : '') + '</div>' +
       '<button type="button" class="a2-btn is-quiet is-icon" data-a2-close aria-label="Close">' + icon('x') + '</button></div>';
     d.innerHTML = head + '<div class="a2-dialog-body">' + (o.body || '') + '</div>' + (o.actions && o.actions.length ? '<div class="a2-dialog-foot"></div>' : '');
     var foot = d.querySelector('.a2-dialog-foot');
@@ -521,6 +525,19 @@
     d.addEventListener('close', function () { if (o.onClose) o.onClose(d.returnValue, d); setTimeout(function () { d.remove(); }, 0); });
     document.body.appendChild(d);
     if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+    /* a body that scrolls must be reachable by keyboard (WCAG 2.1.1) */
+    var body = d.querySelector('.a2-dialog-body');
+    var fit = function () {
+      if (body.scrollHeight > body.clientHeight + 1) { body.tabIndex = 0; body.setAttribute('role', 'region'); body.setAttribute('aria-labelledby', tid); }
+      else { body.removeAttribute('tabindex'); body.removeAttribute('role'); body.removeAttribute('aria-labelledby'); }
+    };
+    fit(); addEventListener('resize', fit);
+    d.addEventListener('close', function () { removeEventListener('resize', fit); });
+    /* initialFocus: 'heading' or a selector inside the dialog (default: the browser's first focusable) */
+    if (o.initialFocus) {
+      var target = o.initialFocus === 'heading' ? d.querySelector('#' + tid) : d.querySelector(o.initialFocus);
+      if (target) { if (o.initialFocus === 'heading') target.tabIndex = -1; try { target.focus(); } catch (e) {} }
+    }
     return d;
   };
 
@@ -561,7 +578,7 @@
             var err = f.querySelector('#a2fb-err');
             if (!u || !c) { err.hidden = false; (u ? f.querySelector('input[name=clear]') : f.querySelector('input[name=useful]')).focus(); return false; }
             var tags = Array.prototype.map.call(f.querySelectorAll('.a2-chip[aria-pressed=true]'), function (b) { return b.dataset.tag; });
-            var note = privacy.scrub(f.querySelector('#a2fb-note').value.trim()) || '';
+            var note = privacy.scrub(f.querySelector('#a2fb-note').value.trim(), 500) || '';
             var entry = { id: uuid(), session_id: log.sessionId(), ts: new Date().toISOString(), platform: cfg.platform, platform_version: cfg.version || '', view: ctx.view, step_index: ctx.step_index, about: privacy.scrub(about), useful: +u.value, clear: +c.value, tags: tags, comment: note };
             log.addFeedback(entry);
             log.event('feedback', { target: ctx.view || 'general', value: 'useful=' + u.value + ';clear=' + c.value + (tags.length ? ';tags=' + tags.join('|') : '') + (note ? ';comment=' + note : ''), score: +u.value });

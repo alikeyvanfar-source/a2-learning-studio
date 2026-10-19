@@ -76,6 +76,12 @@ A2.log.event('decision', { target: 'crane-location', value: 'NE corner', score: 
 A2.log.event('module_complete', { target: 'module-2', score: 88, duration_ms: 540000 });
 ```
 
+## Kit API notes (v1.0.2)
+
+- `A2.privacy.scrub(value, max)` keeps up to `max` characters (default 240, the log field size); feedback comments keep 500.
+- `A2.ui.dialog({ …, initialFocus: 'heading' | '<selector>' })` chooses where focus starts; a dialog body that scrolls becomes a focusable, labelled region automatically.
+- Pages with a fixed bottom bar set `--a2-dock-h` (px) so toasts sit above it.
+
 ## Personal data (FERPA)
 
 - Never log or export names, emails or student IDs. The kit scrubs emails, phone numbers and 7+ digit numbers from every logged string.

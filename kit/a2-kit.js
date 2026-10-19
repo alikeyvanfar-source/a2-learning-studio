@@ -1,5 +1,5 @@
 /* ==========================================================================
-   A² Kit · v1.0.0 · shared runtime for A² Learning Studio platforms
+   A² Kit · v1.0.1 · shared runtime for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.js (inlined into each
    platform between <!-- a2-kit:js --> markers by kit/sync.py).
@@ -21,7 +21,7 @@
   'use strict';
   if (window.A2 && window.A2.kit) return;
 
-  var VERSION = '1.0.0';
+  var VERSION = '1.0.1';
   var A2 = window.A2 = window.A2 || {};
   A2.kit = { version: VERSION };
 

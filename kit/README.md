@@ -66,7 +66,7 @@ Every event row has these 21 fields:
 
 `session_id, platform, platform_version, seq, ts, t_ms, view, step_index, step_total, event, target, value, correct, score, attempt, duration_ms, input_mode, audio_state, viewport, reduced_motion, lang`
 
-Automatic: session start, page load/hide, view changes and time on view, clicks on buttons/links/tabs, changes to checkboxes, radios, selects and sliders (values), free-text fields (**length only, never content**), audio play/pause/end, settings, feedback, exports, errors.
+Automatic: session start, page load/hide, view changes and time on view, clicks on buttons/links/tabs, changes to checkboxes, radios, selects and sliders (values), free-text fields (**length only, never content**), audio play/pause/end, settings, feedback (ratings, tags and comment length; the comment itself stays in the feedback record), exports, errors.
 
 Add the meaningful learning events yourself:
 
@@ -76,6 +76,13 @@ A2.log.event('decision', { target: 'crane-location', value: 'NE corner', score: 
 A2.log.event('module_complete', { target: 'module-2', score: 88, duration_ms: 540000 });
 ```
 
+## Kit API notes (v1.0.3)
+
+- `A2.privacy.scrubText(value, max)` is for anything a learner types (comments, open answers, project labels): it runs `scrub()` and also removes self-introductions and sign-offs ("my name is …", "I'm …", "Thanks, …", "– Name"), names after "from/with/and" and ID cues ("PIN 4826", "netid jsmith12"). Default max 1000.
+- `A2.privacy.nameHints(text)` returns runs of two or three capitalised words that may be a person's name; the feedback form uses it for a one-time "this may include a name" check before saving.
+- `A2.privacy.redact(value)` registers a value typed this session (e.g. a certificate name); it is removed, as whole words in any case, from every later log entry and from JSON/CSV exports (`A2.privacy.redactKnown(text)`).
+- Toasts move to the top of the screen while the bottom position would cover the focused control (WCAG 2.4.11).
+
 ## Kit API notes (v1.0.2)
 
 - `A2.privacy.scrub(value, max)` keeps up to `max` characters (default 240, the log field size); feedback comments keep 500.
@@ -84,7 +91,8 @@ A2.log.event('module_complete', { target: 'module-2', score: 88, duration_ms: 54
 
 ## Personal data (FERPA)
 
-- Never log or export names, emails or student IDs. The kit scrubs emails, phone numbers and 7+ digit numbers from every logged string.
+- Never log or export names, emails or student IDs. The kit scrubs emails, phone numbers and 7+ digit numbers from every logged string, and `scrubText()` also removes self-introductions and ID cues from typed text.
+- No tool can find every name in free text: put a visible "leave out names" hint on every free-text field, pass what is typed through `scrubText()`, and never describe free text as name-free.
 - If a certificate needs a name, label the field "Name for your certificate (optional, stays on this device)", call `A2.privacy.redact(name)` so it can never reach the log, and keep it out of exports and shared leaderboards.
 
 ## Audio

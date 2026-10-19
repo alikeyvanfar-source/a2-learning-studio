@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- /a2-kit:fonts -->
-<!-- a2-kit:css v1.0.2 -->
+<!-- a2-kit:css v1.0.3 -->
 <style id="a2-kit-css">
 /* ==========================================================================
-   A² Kit · v1.0.2 · shared design language for A² Learning Studio platforms
+   A² Kit · v1.0.3 · shared design language for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.css (inlined into each
    platform between <!-- a2-kit:css --> markers by kit/sync.py).
@@ -352,6 +352,7 @@ button.a2-chip[aria-pressed="true"] { background: var(--a2-accent); border-color
 
 /* ---------- toast (pages with a fixed bottom bar set --a2-dock-h) ---------- */
 .a2-toasts { position: fixed; z-index: 10001; left: 50%; bottom: calc(var(--a2-dock-h, 0px) + var(--a2-s5)); transform: translateX(-50%); display: grid; gap: var(--a2-s2); width: min(440px, calc(100vw - 24px)); pointer-events: none; }
+.a2-toasts.is-top { bottom: auto; top: calc(var(--a2-bar-h) + var(--a2-s3)); } /* moved while the bottom spot would cover the focused control */
 .a2-toast {
   pointer-events: auto; display: flex; gap: var(--a2-s3); align-items: center; padding: 12px 16px; border-radius: var(--a2-r);
   background: var(--a2-ink); color: #fff; font: 500 var(--a2-t-sm)/1.4 var(--a2-font-ui); box-shadow: var(--a2-shadow-3);
@@ -603,6 +604,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   .ev-phase:hover { border-color: var(--a2-line-strong); }
   .ev-phase:focus-visible { outline: none; box-shadow: var(--a2-focus-ring); }
   .ev-phase[aria-pressed="true"] { border-color: var(--a2-accent); background: var(--a2-accent-soft); box-shadow: inset 0 0 0 1px var(--a2-accent); }
+  .ev-phase[aria-pressed="true"]:focus-visible { box-shadow: var(--a2-focus-ring), inset 0 0 0 1px var(--a2-accent); }
   .ev-phase .ic { color: var(--a2-accent); }
   .ev-phase .k { font: 600 var(--a2-t-2xs)/1.2 var(--a2-font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--a2-ink-3); }
   .ev-phase b { font-weight: 600; font-size: var(--a2-t-sm); line-height: 1.25; }
@@ -635,6 +637,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   .ev-qdot { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 44px; min-height: 40px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--a2-line-strong); background: var(--a2-surface); font: 600 var(--a2-t-xs)/1 var(--a2-font-mono); color: var(--a2-ink-2); cursor: pointer; }
   .ev-qdot:focus-visible { outline: none; box-shadow: var(--a2-focus-ring); }
   .ev-qdot[aria-current="step"] { border-color: var(--a2-accent); background: var(--a2-accent-soft); color: var(--a2-ink); box-shadow: inset 0 0 0 1px var(--a2-accent); }
+  .ev-qdot[aria-current="step"]:focus-visible { box-shadow: var(--a2-focus-ring), inset 0 0 0 1px var(--a2-accent); }
   .ev-qdot.is-right { color: var(--a2-ok); }
   .ev-qdot.is-wrong { color: var(--a2-err); }
   .ev-qdot .a2-ico { width: 14px; height: 14px; }
@@ -670,6 +673,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   .ev-case:hover { border-color: var(--a2-line-strong); }
   .ev-case:focus-visible { outline: none; box-shadow: var(--a2-focus-ring); }
   .ev-case[aria-pressed="true"] { border-color: var(--a2-accent); background: var(--a2-accent-soft); box-shadow: inset 0 0 0 1px var(--a2-accent), var(--a2-shadow-1); }
+  .ev-case[aria-pressed="true"]:focus-visible { box-shadow: var(--a2-focus-ring), inset 0 0 0 1px var(--a2-accent), var(--a2-shadow-1); }
   .ev-case b { font: 500 var(--a2-t-lg)/1.25 var(--a2-font-display); }
   .ev-case small { color: var(--a2-ink-2); font-size: var(--a2-t-sm); line-height: 1.45; }
   .ev-case .m { font: 500 var(--a2-t-xs)/1.5 var(--a2-font-mono); color: var(--a2-ink-2); }
@@ -747,6 +751,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   .ev-sc-opt:hover { border-color: var(--a2-ink-3); }
   .ev-sc-opt:focus-visible { outline: none; box-shadow: var(--a2-focus-ring); }
   .ev-sc-opt[aria-pressed="true"] { border-color: var(--a2-accent); background: var(--a2-accent-soft); box-shadow: inset 0 0 0 1px var(--a2-accent); }
+  .ev-sc-opt[aria-pressed="true"]:focus-visible { box-shadow: var(--a2-focus-ring), inset 0 0 0 1px var(--a2-accent); }
   .ev-sc-opt b { font-weight: 600; line-height: 1.35; display: flex; gap: 8px; align-items: flex-start; }
   .ev-sc-opt b .a2-ico { color: var(--a2-accent); flex: none; margin-top: 2px; }
   .ev-sc-opt .d { color: var(--a2-ink-2); font-size: var(--a2-t-sm); line-height: 1.5; }
@@ -1175,10 +1180,10 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
 </footer>
 <div class="a2-sr" id="ev-live" aria-live="polite"></div>
 
-<!-- a2-kit:js v1.0.2 -->
+<!-- a2-kit:js v1.0.3 -->
 <script id="a2-kit-js">
 /* ==========================================================================
-   A² Kit · v1.0.2 · shared runtime for A² Learning Studio platforms
+   A² Kit · v1.0.3 · shared runtime for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.js (inlined into each
    platform between <!-- a2-kit:js --> markers by kit/sync.py).
@@ -1190,7 +1195,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
      log                 anonymous 21-field interaction log (localStorage)
      feedback            structured feedback dialog (ratings + tags + note)
      data                export JSON / CSV, clear
-     privacy             scrub names, emails, phone numbers, IDs from logs
+     privacy             scrub emails, phone numbers, IDs and self-introductions from logs and typed text
      ui                  toast, dialog, help, icon()
 
    Must load before any platform script that plays sound, so the audio
@@ -1200,7 +1205,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   'use strict';
   if (window.A2 && window.A2.kit) return;
 
-  var VERSION = '1.0.2';
+  var VERSION = '1.0.3';
   var A2 = window.A2 = window.A2 || {};
   A2.kit = { version: VERSION };
 
@@ -1312,28 +1317,89 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   A2.icons = ICONS;
 
   /* ---------------------------------------------------------------- privacy */
-  var redactions = [];
+  var redactions = [];                 /* {k, n, re}: values registered this page session; whole value in any case, its parts as written */
   var RX = [
     [/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[email]'],
     [/\+?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g, '[phone]'],
     [/\b\d{7,}\b/g, '[number]']
   ];
+  /* free text only: self-introductions, sign-offs and ID cues ("my name is …", "Thanks, …", "ID 4826") */
+  var UP = 'A-ZÀ-ÖØ-Þ', LO = 'a-zß-öø-ÿ';
+  var NM = '[' + UP + '][' + LO + ']+(?:[-\'’][' + UP + ']?[' + LO + ']+)*(?![' + UP + LO + '])';
+  var INIT = '(?:\\s+(?!I(?!\\.))[' + UP + ']\\.?(?![' + UP + LO + ']))?';   /* a trailing initial ("Zed T."), not the pronoun I */
+  var NAMES = NM + '(?:\\s+(?:[' + UP + ']\\.\\s*)?' + NM + '){0,2}' + INIT;
+  var NAMES2 = NM + '(?:\\s+(?:[' + UP + ']\\.\\s*)?' + NM + '){1,2}' + INIT;
+  function ci(w) { return w.replace(/[a-z]/gi, function (c) { return '[' + c.toUpperCase() + c.toLowerCase() + ']'; }); }
+  function cues(list) { return '(?:' + list.map(ci).join('|') + ')'; }
+  /* each pattern: (before)(name)(after); the name is kept when every word in it is a known non-name */
+  var TXT = [
+    new RegExp('(\\b' + cues(['my name is', 'my name\'s', 'my name', 'name is', 'name:', 'i am', 'i\'m', 'i\u2019m', 'call me', 'signed']) + '\\s*)(' + NAMES + ')()', 'g'),
+    new RegExp('(\\b' + cues(['this is', 'it is', 'it\'s', 'from', 'by', 'with', 'and', 'student']) + '\\s+)(' + NAMES2 + ')()', 'g'),
+    new RegExp('((?:^|[\\n.!?;,]|\\s[-\u2013\u2014])\\s*' + cues(['kind regards', 'best regards', 'thank you', 'thanks', 'regards', 'best', 'cheers', 'sincerely']) + '\\s*[,:\u2013\u2014-]?\\s*)(' + NAMES + ')(\\s*[.!]?\\s*)$', 'g'),
+    new RegExp('(\\s[-\u2013\u2014]+\\s*)(' + NAMES + ')(\\s*)$', 'g'),
+    new RegExp('^(\\s*)(' + NAMES + ')(\\s+' + ci('here') + '\\b)', 'g')
+  ];
+  var IDS = new RegExp('\\b(' + ['student id', 'student number', 'student no', 'net id', 'netid', 'ksu id', 'username', 'user name', 'pin', 'id'].map(ci).join('|') + ')(\\s*(?:(?:[:#=]|no\\.?|number|is|was)\\s*)?)[A-Za-z]*\\d[A-Za-z0-9._-]*', 'g');
+  /* capitalised words that are not names (split points for the possible-name check) */
+  var NOT_NAMES = {};
+  ('A About After Also An And Any Are As At Back Be Because Before Best But By Can Could Did Do Does Dr Each Even Every For From Good Great Had Has Have He Her Here His How However I If In Is It Its Just Maybe Me More Most Mr Mrs Ms My Next No Not Now Of Ok Okay On Once One Only Or Other Our Overall Please Prof Professor Really She So Some Still Than Thank Thanks That The Their Them Then There These They This Those Though To Today Too Two Three Four Five Six Up Very Was We Well Were What When Where Which While Who Why Will With Would Yes Yet You Your ' +
+    'Module Modules Step Steps Part Parts Slide Slides Phase Phases Case Cases Study Studies Report Reports Survey Quiz Score Scores Certificate Lab Decision Decisions Tour Narration Caption Captions Transcript Video Videos Audio Sound Sounds Hub Home Start Stop Play Pause Replay Listen Help Feedback Export Exports Data Center Centre Centers Cloud Site Sites Planning Plan Critical Path Gantt Schedule Crew Crews Crane Tower Gate Safety Quality Risk Risks Log Register Project Projects Construction Management Manager Kennesaw State University Studio Learning Ecosystem Simulator Simulation Monte Carlo Bayesian Pareto Extreme Value Theory Analysis Viability Guidance Scenario Scenarios Pathway Criteria Instructor Teacher Student Students Team Group Class Course Week Day Morning ' +
+    'Google Amazon Apple Microsoft Meta Oracle Equinix Digital Realty Chrome Safari Firefox Edge Windows Mac Android Excel Word Canvas Brightspace Monday Tuesday Wednesday Thursday Friday Saturday Sunday January February March April May June July August September October November December Fall Spring Summer Winter Atlanta Georgia Marietta').split(' ').forEach(function (w) { NOT_NAMES[w] = 1; });
+  function wordRe(v, flags) { return new RegExp('(^|[^' + UP + LO + '0-9])(' + v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')(?![' + UP + LO + '0-9])', flags); }
+  function addRedaction(v, full) {
+    var k = (full ? 'f:' : 'p:') + v.toLowerCase();
+    if (redactions.some(function (r) { return r.k === k; })) return;
+    redactions.push({ k: k, n: v.length, re: wordRe(v, full ? 'gi' : 'g') });   /* the whole value in any case; its parts as written */
+  }
   var privacy = A2.privacy = {
-    /* register a personal value (e.g. a name typed for a certificate) so it never reaches the log */
-    redact: function (value) {
+    /* register a personal value (e.g. a name typed for a certificate) so it never reaches the log or an export.
+       opts.parts === false: match only the whole value (e.g. an organisation name) */
+    redact: function (value, opts) {
       var v = String(value || '').trim(); if (v.length < 2) return;
-      redactions.push(v);
-      v.split(/[\s,]+/).forEach(function (part) { if (part.length >= 3) redactions.push(part); });
+      addRedaction(v, true);
+      if (!(opts && opts.parts === false)) v.split(/[\s,]+/).forEach(function (part) { if (part.length >= 3) addRedaction(part, false); });
+      redactions.sort(function (a, b) { return b.n - a.n; });
     },
-    /* max: longest string kept (default 240, the log field size) */
+    /* only the values registered with redact(), whole words; safe on JSON and CSV text */
+    redactKnown: function (s) {
+      if (typeof s !== 'string' || !redactions.length) return s;
+      redactions.forEach(function (r) { r.re.lastIndex = 0; s = s.replace(r.re, '$1[redacted]'); });
+      return s;
+    },
+    /* every logged string: registered values, emails, phone numbers, 7+ digit runs. max: longest string kept (default 240) */
     scrub: function (value, max) {
       if (value == null) return value;
       if (typeof value === 'number' || typeof value === 'boolean') return value;
-      var s = typeof value === 'string' ? value : JSON.stringify(value);
-      redactions.forEach(function (r) { if (r) s = s.split(r).join('[redacted]'); });
+      var s = privacy.redactKnown(typeof value === 'string' ? value : JSON.stringify(value));
       RX.forEach(function (p) { s = s.replace(p[0], p[1]); });
       var lim = typeof max === 'number' && max > 3 ? max : 240;
       return s.length > lim ? s.slice(0, lim - 3) + '...' : s;
+    },
+    /* typed free text (comments, open answers, labels): scrub() plus self-introductions, sign-offs and ID cues */
+    scrubText: function (value, max) {
+      if (value == null) return value;
+      var s = String(value);
+      TXT.forEach(function (re) {
+        re.lastIndex = 0;
+        s = s.replace(re, function (all, pre, name, post) {
+          var known = name.split(/\s+/).every(function (w) { return NOT_NAMES[w.replace(/\.$/, '')] || /^[A-Z]\.$/.test(w); });
+          return known ? all : pre + '[name]' + post;
+        });
+      });
+      IDS.lastIndex = 0; s = s.replace(IDS, '$1$2[id]');
+      return privacy.scrub(s, typeof max === 'number' ? max : 1000);
+    },
+    /* runs of 2-3 capitalised words that may be a person's name (for a gentle check before saving) */
+    nameHints: function (value) {
+      var s = String(value || ''), out = [], run = [];
+      var re = new RegExp(NM + '|[^\\s]+', 'g'), m, nm = new RegExp('^' + NM + '$');
+      function end() { if (run.length >= 2) out.push(run.join(' ')); run = []; }
+      while ((m = re.exec(s))) {
+        var w = m[0], core = w.replace(/[.,;:!?)"”]+$/, '');
+        if (nm.test(core) && !NOT_NAMES[core]) { run.push(core); if (core !== w) end(); } else end();
+      }
+      end();
+      return out.filter(function (x, i) { return out.indexOf(x) === i; }).slice(0, 3);
     }
   };
 
@@ -1581,6 +1647,8 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
      pass through A2.privacy.scrub(); the session id is a random UUID per tab. */
   var FIELDS = ['session_id', 'platform', 'platform_version', 'seq', 'ts', 't_ms', 'view', 'step_index', 'step_total', 'event',
     'target', 'value', 'correct', 'score', 'attempt', 'duration_ms', 'input_mode', 'audio_state', 'viewport', 'reduced_motion', 'lang'];
+  var PRIVACY_NOTE = 'Anonymous: a random session ID and no name, email or ID fields. Typed text is logged as its length only; feedback comments are kept ' +
+    'with emails, phone numbers, ID numbers and self-introductions removed. Check comments for names before sharing.';
   var log = A2.log = (function () {
     var buf = null, fb = null, sess = null, seq = 0, t0 = 0, ctx = { view: null, step_index: null, step_total: null }, viewStart = 0;
     var inputMode = 'mouse', flushT = null, MAX = 6000;
@@ -1658,7 +1726,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
       clear: function () { buf = []; fb = []; lsDel(keyLog()); lsDel(keyFb()); flush(); },
       toCSV: function (rows) {
         rows = rows || api.events();
-        var q = function (v) { if (v == null) return ''; var s = String(v); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+        var q = function (v) { if (v == null) return ''; var s = privacy.redactKnown(String(v)); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
         return FIELDS.join(',') + '\n' + rows.map(function (r) { return FIELDS.map(function (f) { return q(r[f]); }).join(','); }).join('\n') + '\n';
       },
       toJSON: function () {
@@ -1668,10 +1736,10 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
         return JSON.stringify({
           schema: 'a2.log/1', kit_version: VERSION, platform: cfg.platform, platform_name: cfg.name, platform_version: cfg.version || '',
           exported_at: new Date().toISOString(),
-          privacy: 'Anonymous: random session IDs only. No names, emails or student IDs are recorded.',
+          privacy: PRIVACY_NOTE,
           fields: FIELDS, sessions: Object.keys(sessions).map(function (k) { return sessions[k]; }),
           events: ev, feedback: api.feedback()
-        }, null, 2);
+        }, function (k, v) { return typeof v === 'string' ? privacy.redactKnown(v) : v; }, 2);
       }
     };
     return api;
@@ -1680,11 +1748,25 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   /* ------------------------------------------------------------------ ui */
   var ui = A2.ui = {};
   var toastWrap = null;
+  /* a toast never covers the focused control (WCAG 2.4.11): it moves to the top while it would */
+  function hits(a, b) { return a.width > 0 && b.width > 0 && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; }
+  function placeToasts() {
+    if (!toastWrap) return;
+    if (!toastWrap.children.length) { toastWrap.classList.remove('is-top'); return; }
+    var el = document.activeElement;
+    if (!el || el === document.body || el === document.documentElement) return;
+    if (hits(el.getBoundingClientRect(), toastWrap.getBoundingClientRect())) toastWrap.classList.toggle('is-top');
+  }
   ui.toast = function (msg, ms) {
-    if (!toastWrap) { toastWrap = h('div', { class: 'a2-toasts', role: 'status', 'aria-live': 'polite' }); document.body.appendChild(toastWrap); }
+    if (!toastWrap) {
+      toastWrap = h('div', { class: 'a2-toasts', role: 'status', 'aria-live': 'polite' }); document.body.appendChild(toastWrap);
+      document.addEventListener('focusin', function () { setTimeout(placeToasts, 0); });
+      addEventListener('resize', placeToasts);
+    }
     var t = h('div', { class: 'a2-toast' }, icon('check-circle') + '<span>' + esc(msg) + '</span>');
     toastWrap.appendChild(t);
-    setTimeout(function () { t.remove(); }, ms || 3600);
+    placeToasts();
+    setTimeout(function () { t.remove(); placeToasts(); }, ms || 3600);
   };
   /* dialog({title, lead, body (html), actions:[{label, primary, danger, value, onClick}], onClose, initialFocus}) -> HTMLDialogElement */
   var dlgSeq = 0;
@@ -1745,7 +1827,8 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
         TAGS.map(function (t) { return '<button type="button" class="a2-chip" aria-pressed="false" data-tag="' + esc(t) + '">' + esc(t) + '</button>'; }).join('') + '</div></fieldset>' +
         '<div class="a2-field"><label for="a2fb-note">Comment <span class="a2-badge is-optional">Optional</span></label>' +
         '<textarea id="a2fb-note" class="a2-textarea" maxlength="500" aria-describedby="a2fb-hint"></textarea>' +
-        '<span id="a2fb-hint" class="a2-hint">Please don\'t include names, emails or student IDs. Up to 500 characters.</span></div>' +
+        '<span id="a2fb-hint" class="a2-hint">Feedback is anonymous, so leave out names, emails and ID numbers. Up to 500 characters.</span>' +
+        '<p class="a2-callout is-warn" id="a2fb-name" role="alert" hidden></p></div>' +
         '<p class="a2-error" id="a2fb-err" role="alert" hidden>Please answer the two required questions.</p>' +
         '</form>';
       var dlg = ui.dialog({
@@ -1754,18 +1837,34 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
           label: 'Save feedback', primary: true, onClick: function (d) {
             var f = d.querySelector('#a2fb');
             var u = f.querySelector('input[name=useful]:checked'), c = f.querySelector('input[name=clear]:checked');
-            var err = f.querySelector('#a2fb-err');
+            var err = f.querySelector('#a2fb-err'), ta = f.querySelector('#a2fb-note'), warn = f.querySelector('#a2fb-name');
             if (!u || !c) { err.hidden = false; (u ? f.querySelector('input[name=clear]') : f.querySelector('input[name=useful]')).focus(); return false; }
+            var raw = ta.value.trim();
+            /* a gentle check: words that look like a person's name get one chance to be removed */
+            var hints = privacy.nameHints(privacy.scrubText(raw, 500));
+            if (hints.length && !d.__a2NameChecked) {
+              d.__a2NameChecked = true;
+              warn.textContent = 'This may include a name: ' + hints.map(function (x) { return '“' + x + '”'; }).join(', ') + '. Feedback is anonymous, so please remove it, or select Save feedback again to save the comment as it is.';
+              warn.hidden = false; ta.setAttribute('aria-describedby', 'a2fb-hint a2fb-name'); ta.focus({ preventScroll: true });
+              try { warn.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+              return false;
+            }
             var tags = Array.prototype.map.call(f.querySelectorAll('.a2-chip[aria-pressed=true]'), function (b) { return b.dataset.tag; });
-            var note = privacy.scrub(f.querySelector('#a2fb-note').value.trim(), 500) || '';
+            var note = privacy.scrubText(raw, 500) || '';
             var entry = { id: uuid(), session_id: log.sessionId(), ts: new Date().toISOString(), platform: cfg.platform, platform_version: cfg.version || '', view: ctx.view, step_index: ctx.step_index, about: privacy.scrub(about), useful: +u.value, clear: +c.value, tags: tags, comment: note };
             log.addFeedback(entry);
-            log.event('feedback', { target: ctx.view || 'general', value: 'useful=' + u.value + ';clear=' + c.value + (tags.length ? ';tags=' + tags.join('|') : '') + (note ? ';comment=' + note : ''), score: +u.value });
+            /* the comment itself stays in the feedback record only; the event log gets its length */
+            log.event('feedback', { target: ctx.view || 'general', value: 'useful=' + u.value + ';clear=' + c.value + (tags.length ? ';tags=' + tags.join('|') : '') + ';comment_chars=' + note.length, score: +u.value });
             ui.toast('Thanks. Feedback saved. Export it any time from Your data.');
           }
         }]
       });
       dlg.querySelectorAll('.a2-chip').forEach(function (b) { b.addEventListener('click', function () { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); }); });
+      var note0 = dlg.querySelector('#a2fb-note');
+      note0.addEventListener('input', function () {
+        if (!dlg.__a2NameChecked) return;
+        dlg.__a2NameChecked = false; var w = dlg.querySelector('#a2fb-name'); w.hidden = true; w.textContent = ''; note0.setAttribute('aria-describedby', 'a2fb-hint');
+      });
       log.event('feedback_open', { target: ctx.view || 'general', value: opts.reason || 'button' });
       return dlg;
     },
@@ -1791,8 +1890,8 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
         '<div class="a2-kpi"><b class="a2-num">' + ev.length + '</b><span>interaction events</span></div>' +
         '<div class="a2-kpi"><b class="a2-num">' + fb.length + '</b><span>feedback entries</span></div>' +
         '<div class="a2-kpi"><b class="a2-num" style="font-size:18px">' + esc((log.sessionId() || '').slice(0, 8)) + '</b><span>anonymous session</span></div></div>' +
-        '<div class="a2-callout is-info">' + icon('shield') + '<div><strong>What is recorded.</strong> Screens visited, steps, choices, scores, timings and settings, under a random session ID. ' +
-        'No names, emails or student IDs. Nothing leaves this device unless you download it and choose to share it.</div></div>' +
+        '<div class="a2-callout is-info">' + icon('shield') + '<div><strong>What is recorded.</strong> Screens visited, steps, choices, scores, timings and settings, under a random session ID, plus any feedback you save. ' +
+        'There are no name, email or ID fields; text you type is logged as its length only, and feedback comments have emails, phone numbers and ID numbers removed. Nothing leaves this device unless you download it and choose to share it.</div></div>' +
         '<p class="a2-hint" style="margin:12px 0 0">JSON includes everything (events and feedback). CSV has one row per event with the 21 standard A² fields.</p>';
       ui.dialog({
         title: 'Your data', lead: cfg.name + ' · stored only in this browser', body: body,
@@ -2679,18 +2778,10 @@ function reduced() { try { return matchMedia('(prefers-reduced-motion: reduce)')
 function scrollIntoViewSoft(el) { if (!el) return; var r = el.getBoundingClientRect(); if (r.top < 70 || r.top > innerHeight * 0.7) el.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); }
 function kpi(value, label, sub) { return '<div class="a2-kpi"><b class="a2-num">' + value + '</b><span>' + label + '</span>' + (sub ? '<span class="ev-kpi-sub">' + sub + '</span>' : '') + '</div>'; }
 function badge(kind, text) { return '<span class="a2-badge is-' + kind + '">' + (text || (kind === 'required' ? 'Required' : kind === 'optional' ? 'Optional' : kind === 'done' ? 'Done' : kind === 'locked' ? 'Locked' : kind)) + '</span>'; }
-/* free text: kit scrub (emails, phone numbers, 7+ digit runs, registered names) without its 240-character cap */
+/* typed text: the kit's scrubText (emails, phone numbers, ID numbers, self-introductions, registered names) */
 function scrubText(s, max) {
   s = String(s == null ? '' : s).slice(0, max || 1000);
-  if (!s.trim()) return '';
-  var out = '', rest = s;
-  while (rest.length > 200) {
-    var cut = -1, re = /\s+/g, m;
-    while ((m = re.exec(rest)) && m.index < 200) { var a = rest.charAt(m.index - 1), b = rest.charAt(m.index + m[0].length); if (!/[\d@+(.-]/.test(a) && !/[\d@+(.-]/.test(b)) cut = m.index + m[0].length; }
-    if (cut <= 0) cut = 200;
-    out += A2.privacy.scrub(rest.slice(0, cut)); rest = rest.slice(cut);
-  }
-  return out + A2.privacy.scrub(rest);
+  return s.trim() ? A2.privacy.scrubText(s, max || 1000) : '';
 }
 /* keep focus on the same logical control when a block is re-rendered */
 function withFocus(fn) {
@@ -3476,7 +3567,7 @@ function runCase() {
   var a = makeAnalysis(caseInputs(i), 'case', i);
   if (first) stepComplete('2-case-study', { score: a.viability.score, value: a.viability.rating });
   refresh();
-  var h = $('res-h-' + a.id); if (h) { h.focus({ preventScroll: true }); h.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); }
+  var h = $('res-h-' + a.id); if (h) { h.focus({ preventScroll: true }); (h.closest('.ev-res') || h.closest('.ev-res-head') || h).scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); }
   announce('Analysis done: ' + a.f.name + ', ' + a.viability.rating + ' viability, score ' + fmt(a.viability.score) + '.');
 }
 
@@ -3719,7 +3810,7 @@ function runNP() {
   var a = makeAnalysis(ordered, 'own', null);
   S.ui.npLast = a.id;
   refresh();
-  var h = $('res-h-' + a.id); if (h) { h.focus({ preventScroll: true }); h.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); }
+  var h = $('res-h-' + a.id); if (h) { h.focus({ preventScroll: true }); (h.closest('.ev-res') || h.closest('.ev-res-head') || h).scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); }
   announce('Analysis done: ' + a.f.name + ', ' + a.viability.rating + ' viability.');
 }
 
@@ -3791,7 +3882,7 @@ R.review = function () {
   nx.className = 'a2-callout ev-next ' + (sub ? 'is-ok' : 'is-next');
   nx.innerHTML = sub ? I('check-circle') + '<div><p><strong>Response saved' + (S.survey.updates ? ' and updated ' + S.survey.updates + ' time' + (S.survey.updates === 1 ? '' : 's') : '') + '.</strong> One response is kept per session; change any answer and select Update my response.</p><p class="ev-next-sub">Continue to step 6 for your reports and certificate.</p></div>'
     : I('arrow-right') + '<div><p><strong>Next:</strong> answer the ' + N_SURVEY_REQ + ' ratings marked Required, then submit. ' + badge('required') + '</p><p class="ev-next-sub">The survey is needed for the certificate. Section A and the open questions are optional.</p></div>';
-  $('rv-privacy').innerHTML = I('shield') + '<div><strong>How your answers are used.</strong> They are saved in this browser under a random session ID, with no name or email, and leave it only if you download them. They help evaluate this platform. Open answers are scrubbed of emails, phone numbers and long numbers before they are saved.</div>';
+  $('rv-privacy').innerHTML = I('shield') + '<div><strong>How your answers are used.</strong> They are saved in this browser under a random session ID, with no name or email, and leave it only if you download them. They help evaluate this platform. Before they are saved, open answers have emails, phone numbers, ID numbers and self-introductions removed; please leave other names out of them.</div>';
   if (!surveyApplied) { applySurvey(S.survey.draft && Object.keys(S.survey.draft).length ? S.survey.draft : S.survey.response ? responseToValues(S.survey.response) : {}); surveyApplied = true; }
   updateSurveyFoot();
 };
@@ -3802,7 +3893,9 @@ function updateSurveyFoot() {
   $('reviewSummary').innerHTML = sub ? '<div class="a2-callout is-ok">' + I('check-circle') + '<div><strong>Saved ' + esc(dateStr(S.survey.updated_at || S.survey.submitted_at)) + '.</strong> ' +
     (certReady() ? 'All certificate requirements are met. <button type="button" class="a2-btn is-sm" data-act="nav-go" data-go="cert">Go to 6b · Certificate</button>' : 'Continue to step 6.') + '</div></div>' : '';
 }
+var surveyNameChecked = false;
 function onSurveyInput() {
+  surveyNameChecked = false;
   S.survey.draft = surveyValues();
   Object.keys(S.survey.draft).forEach(function (k) { S.survey.draft[k] = scrubbedDraftVal(k, S.survey.draft[k]); });
   var f = $('rv-form');
@@ -3817,6 +3910,17 @@ function submitSurvey() {
       missing.map(function (q) { return '<li><a href="#fs-' + q.name + '" data-act="sv-jump" data-q="' + q.name + '">Q' + q.n + ' · ' + esc(fill(q.text)) + '</a></li>'; }).join('') + '</ul></div></div>';
     box.focus();
     A2.log.event('survey_incomplete', { value: missing.length + ' missing' });
+    return;
+  }
+  /* one gentle check: open answers that may include a person's name */
+  var named = SURVEY_ITEMS.filter(function (q) { return q.type === 'text' && v[q.name]; }).map(function (q) { return { q: q, hits: A2.privacy.nameHints(scrubText(v[q.name], 1000)) }; }).filter(function (x) { return x.hits.length; });
+  if (named.length && !surveyNameChecked) {
+    surveyNameChecked = true;
+    box.innerHTML = '<div class="a2-callout is-warn" role="alert">' + I('alert') + '<div><strong>An open answer may include a name.</strong> The survey is anonymous, so please remove names from:<ul>' +
+      named.map(function (x) { return '<li><a href="#fs-' + x.q.name + '" data-act="sv-jump" data-q="' + x.q.name + '">Q' + x.q.n + ' · ' + x.hits.map(function (h) { return '\u201C' + esc(h) + '\u201D'; }).join(', ') + '</a></li>'; }).join('') +
+      '</ul>Or select ' + (S.survey.response ? 'Update my response' : 'Submit my answers') + ' again to save them as they are.</div></div>';
+    box.focus();
+    A2.log.event('survey_name_check', { value: named.length + ' open answers' });
     return;
   }
   box.innerHTML = '';
@@ -3854,7 +3958,7 @@ R.reports = function () {
     '<li>every analysis with all ' + INPUT_KEYS.length + ' inputs, the EVT parameters, ' + N_CRIT + ' sub-criteria scores, viability formula, TOPSIS results and budget;</li>' +
     '<li>scenario decisions, Monte Carlo runs with their seeds, simulated guidance runs and your survey answers;</li>' +
     '<li>the interaction log for this session (screens, choices, timings; typed text is recorded as length only).</li></ul>' +
-    '<p class="a2-hint" style="margin:0 0 14px">Not included: your name or certificate details, email, student ID, browser user agent, referrer or exact screen size. Open answers are scrubbed of emails, phone numbers and long numbers.</p>' +
+    '<p class="a2-hint" style="margin:0 0 14px">Not included: your name or certificate details, email, student ID, browser user agent, referrer or exact screen size. Open answers and project names have emails, phone numbers, ID numbers and self-introductions removed; leave personal names out of them.</p>' +
     '<div class="ev-row"><button type="button" class="a2-btn is-primary" data-act="dl-session">' + I('download') + 'Download the session record</button><code class="ev-muted">' + esc(FILES.session()) + '</code></div></div>';
   var noSurvey = S.survey.response ? '' : 'Submit the learner review first', noScen = S.decisions.length ? '' : 'Decide a construction scenario first';
   $('rep-exports').innerHTML =
@@ -3918,7 +4022,7 @@ function buildSession() {
   return {
     _schema: 'EVNN-DC_Session_Record_v3',
     _description: 'One learner session in the EVNN-DC Decision Lab: pathway progress, Pre-Module ranking and quiz, every analysis with all inputs and EVT parameters, scenario decisions, Monte Carlo and simulated guidance runs, survey answers and the interaction log.',
-    _privacy: 'De-identified. Random session ID; device class only (phone, tablet or desktop). No name, email, student ID, browser user agent, referrer, time zone or exact screen size. Free text is scrubbed of emails, phone numbers and long digit runs. The certificate name is never stored or exported.',
+    _privacy: 'De-identified. Random session ID; device class only (phone, tablet or desktop). No name, email, student ID, browser user agent, referrer, time zone or exact screen size. Free text (open answers, project names) has emails, phone numbers, ID numbers and self-introductions removed, but may still hold a name a learner typed. The certificate name is never stored or exported.',
     _changes_from_v2: [
       'case_study_analyses[].input_parameters now holds all 16 model inputs plus location under the model key names (v2 dropped 7 of them)',
       'case_study_analyses[].evt_results now holds the fitted GEV (shape_xi, scale_sigma, location_mu, threshold_u, return_level_100, tau3, ...); v2 was always empty',
@@ -3995,6 +4099,10 @@ function exportBlocked(name, bad) {
   A2.ui.dialog({ title: 'Download stopped', lead: 'The file has ' + bad.length + ' missing value' + (bad.length === 1 ? '' : 's') + ', so it was not saved.', body: '<ul class="ev-list">' + bad.slice(0, 12).map(function (b) { return '<li><code>' + esc(b) + '</code></li>'; }).join('') + '</ul><p class="a2-hint">Please report this through Feedback.</p>', actions: [{ label: 'Close', primary: true }] });
 }
 function deliver(name, text, type) {
+  /* no name typed this session (certificate) leaves in a file: JSON string values, CSV rows (not the header), report text */
+  if (/\.json$/i.test(name)) { try { text = JSON.stringify(JSON.parse(text), function (k, v) { return typeof v === 'string' ? A2.privacy.redactKnown(v) : v; }, 2); } catch (e) { text = A2.privacy.redactKnown(text); } }
+  else if (/\.csv$/i.test(name)) { var nl = text.indexOf('\n'); text = nl < 0 ? text : text.slice(0, nl + 1) + A2.privacy.redactKnown(text.slice(nl + 1)); }
+  else text = A2.privacy.redactKnown(text);
   A2.util.download(name, text, type);
   A2.log.event('export', { target: name, value: Math.round(text.length / 1024 * 10) / 10 + ' KB' });
   A2.ui.toast('Downloaded ' + name + '.');
@@ -4086,7 +4194,7 @@ function genSurveyReport() {
     var labels = {}; q.options.forEach(function (o) { labels[o[0]] = o[1]; }); labels[q.none] = 'Not answered';
     L.push('  Q' + q.n + ' ' + fill(q.text) + ': ' + Object.keys(counts).map(function (k) { return (labels[k] || k) + ' = ' + counts[k]; }).join('; '));
   });
-  L.push('', 'OPEN ANSWERS (scrubbed of emails, phone numbers and long numbers)');
+  L.push('', 'OPEN ANSWERS (emails, phone numbers, ID numbers and self-introductions removed)');
   SURVEY_ITEMS.filter(function (q) { return q.type === 'text'; }).forEach(function (q) {
     L.push('  Q' + q.n + ' ' + fill(q.text));
     r.forEach(function (x) { var v = get(q, x); L.push('    - ' + (v ? String(v).replace(/\s+/g, ' ') : '(no answer)')); });
@@ -4142,7 +4250,7 @@ function generateCert() {
   if (!certReady()) { A2.ui.toast('Finish all ' + CERT_REQ.length + ' requirements first (' + CERT_REQ.filter(done).length + ' done).'); return; }
   var name = $('cert-name').value.trim(), org = $('cert-org').value.trim();
   if (name) A2.privacy.redact(name);
-  if (org) A2.privacy.redact(org);
+  if (org) A2.privacy.redact(org, { parts: false });
   var first = !S.cert.generated;
   certView = { name: name || 'Participant', org: org, code: certCode(), date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) };
   S.cert.generated = true; S.cert.count = (S.cert.count || 0) + 1; if (first) S.cert.generated_at = iso();

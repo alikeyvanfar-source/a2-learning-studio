@@ -1,5 +1,5 @@
 /* ==========================================================================
-   A² Kit · v1.0.2 · shared design language for A² Learning Studio platforms
+   A² Kit · v1.0.3 · shared design language for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.css (inlined into each
    platform between <!-- a2-kit:css --> markers by kit/sync.py).
@@ -340,6 +340,7 @@ button.a2-chip[aria-pressed="true"] { background: var(--a2-accent); border-color
 
 /* ---------- toast (pages with a fixed bottom bar set --a2-dock-h) ---------- */
 .a2-toasts { position: fixed; z-index: 10001; left: 50%; bottom: calc(var(--a2-dock-h, 0px) + var(--a2-s5)); transform: translateX(-50%); display: grid; gap: var(--a2-s2); width: min(440px, calc(100vw - 24px)); pointer-events: none; }
+.a2-toasts.is-top { bottom: auto; top: calc(var(--a2-bar-h) + var(--a2-s3)); } /* moved while the bottom spot would cover the focused control */
 .a2-toast {
   pointer-events: auto; display: flex; gap: var(--a2-s3); align-items: center; padding: 12px 16px; border-radius: var(--a2-r);
   background: var(--a2-ink); color: #fff; font: 500 var(--a2-t-sm)/1.4 var(--a2-font-ui); box-shadow: var(--a2-shadow-3);

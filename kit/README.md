@@ -76,6 +76,11 @@ A2.log.event('decision', { target: 'crane-location', value: 'NE corner', score: 
 A2.log.event('module_complete', { target: 'module-2', score: 88, duration_ms: 540000 });
 ```
 
+## Kit API notes (v1.0.5)
+
+- Fewer false alarms in `scrubText()`: "with" and "and" only take Capitalised names ("with Sarah Lee", not "with dark mode"); words shaped like ordinary words (dyslexic, international, uncertain) and a larger list of course and feature words are kept.
+- Use `scrubText()` for sentences only. Short labels such as a project name or a place are not sentences: pass them through `scrub()`.
+
 ## Kit API notes (v1.0.4)
 
 - `scrubText()` finds self-introductions, sign-offs and names after cue words in any letter case ("my name is zed", "MY NAME IS ZED"), not only when the name is capitalised.

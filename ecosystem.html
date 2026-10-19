@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- /a2-kit:fonts -->
-<!-- a2-kit:css v1.0.4 -->
+<!-- a2-kit:css v1.0.5 -->
 <style id="a2-kit-css">
 /* ==========================================================================
-   A² Kit · v1.0.4 · shared design language for A² Learning Studio platforms
+   A² Kit · v1.0.5 · shared design language for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.css (inlined into each
    platform between <!-- a2-kit:css --> markers by kit/sync.py).
@@ -743,10 +743,10 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
 </nav>
 <div class="a2-sr" id="announce" aria-live="polite"></div>
 
-<!-- a2-kit:js v1.0.4 -->
+<!-- a2-kit:js v1.0.5 -->
 <script id="a2-kit-js">
 /* ==========================================================================
-   A² Kit · v1.0.4 · shared runtime for A² Learning Studio platforms
+   A² Kit · v1.0.5 · shared runtime for A² Learning Studio platforms
    A² Learning Studio · Dr. Ali Keyvanfar & Dr. Arezou Shafaghat · KSU
    Canonical source: a2-learning-studio/kit/a2-kit.js (inlined into each
    platform between <!-- a2-kit:js --> markers by kit/sync.py).
@@ -768,7 +768,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   'use strict';
   if (window.A2 && window.A2.kit) return;
 
-  var VERSION = '1.0.4';
+  var VERSION = '1.0.5';
   var A2 = window.A2 = window.A2 || {};
   A2.kit = { version: VERSION };
 
@@ -900,12 +900,14 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   /* ordinary words (lowercase): after a cue, any other word is treated as a possible name */
   var COMMON = {};
   ('a able about above across actually afraid after again against ago ahead all almost alone along already also although always am amazing an and angry another any anyone anything anytime anyway are around as ask asked at audio aware away awesome awful back bad bar bars basic be because been before behind being below best better between big bit blind bored boring both bottom brief broken bug bugs busy but button buttons by call came can cannot cant certain chart charts check class classmate classmates clear click close cloud code color colour come comment comments confusing cool correct cost costs could course crane crew crews data day days dear deaf definitely design did didnt different difficult do does doesnt doing done dont down dr dumb during each easier easy either else end enjoy enjoyed enough error errors even ever every everybody everyone everything exactly example excellent exercise explain fair fast feedback few fine first fit folks font for found free friend friends from fun funny game games gave get gets getting give glad go goes going gone good got graph great group guys had happy hard has have having he help helpful her here hers him his honest hope how however hungry i if im important in info instructions instructor interesting into is issue issues it its itself just keep kind kinda knew know lab lacking last late later laggy layout learn learned learning least less let level like liked likes little long look looked looks lost lot lots love loved low mad made main make makes many mate maybe me mean might mine minute minutes mobile module modules more most much music must my myself name narration need needed needs negative neither nervous never new next nice no nobody none nope nor not nothing now of off often ok okay old on once one only open or other others our out over overall own page pages part parts partner people perfect phase phone pick place plan planning please pls points poor positive pretty prof professor project projects proud question questions quick quickly quite quiz rather ready really report reports right risk run sad said same saw say says scared schedule school score scores screen section see seem seemed seems serious set she short shy should show showed sick simple since sir site slide slides slow small smart so some someone something sometimes soon sorry sort sound sounds still stuck student students study stuff stupid such super sure survey sweet system take takes talk task tasks teacher team text than thank thanks that the their them then there these they thing things think this those though thought through time times tiny tip tips tired to today together too tool tools top tour tried true try trying turn two under understand understood unclear unsure unit until up upset us use used useful user using very video videos voice want wanted was way we week weird well went were what when where which while who whole why will wish wishes with without wonderful work worked works world worried would wow wrong yeah year yes yet you your yours yourself ' +
-    'ai app apps aws bim browser buildsim captions chatgpt claude computer cpm csv d2l ecosystem email evnn evt excel gantt gev gpt hub ipad iphone json ksu laptop lca link links mcdm nanolca nexus pdf pert playscan powerpoint scorm simulator simulation slideshow tablet topsis transcript transcripts voxprofessor website wifi zoom').split(' ').forEach(function (w) { COMMON[w] = 1; });
+    'ai app apps aws bim browser buildsim captions chatgpt claude computer cpm csv d2l ecosystem email evnn evt excel gantt gev gpt hub ipad iphone json ksu laptop lca link links mcdm nanolca nexus pdf pert playscan powerpoint scorm simulator simulation slideshow tablet topsis transcript transcripts voxprofessor website wifi zoom ' +
+    'access accessibility account add added answer answers architect assignment assignments bigger blue bonus budget building buildings campus capstone career choice choices city client clock colorblind company concrete construction contractor contrast county credit crash crashes dark deadline delay delays dialog download drag drop due dyslexic east energy engineer engineering english equipment exam export extra farm feature features file files fix fixes folder foreman frozen glitch glitches grade grades grading green grid homework idea ideas improvement improvements industry international internship job keyboard labor lag language larger lecture lectures light load login logout lower manager managers material materials menu missing mode money mouse mute native north option options osha owner pace password peer permit permits popup power practice price problem problems profile rain red reload reset restart review river road rubric save saved scroll semester settings shortcut shortcuts size smaller solar south spanish speed state steel storm submit subtitle subtitles suggestion suggestions superintendent tab tabs tap term test tests theme timer touch translation truck trucks typo typos update upload utility version volume water weather weekend west wind window worker workers').split(' ').forEach(function (w) { COMMON[w] = 1; });
   Object.keys(NOT_NAMES).forEach(function (w) { COMMON[w.toLowerCase()] = 1; });
   /* after a strong cue ("my name is"), these end the name */
   var STOP = {};
   ('a about after again also am an and anytime are as at back but by for from had has have he her his i if im in into is it its later maybe me my no not of off on or our out she so than that the their them then there they this to too um uh up was we were when where which who with yes you your').split(' ').forEach(function (w) { STOP[w] = 1; });
   var SUFFIX = /(?:ing|ed|ly|ful|ous|ive|able|ible|less|ness|ment|tion|sion|ity|ism|ist|ance|ence|ize|ise|ward|wise)$/;
+  var LONG_SHAPE = /(?:ic|al|ary|ory|ian)$|^(?:un|non|dis|mis|inter|over|under|multi|anti|semi)/;   /* dyslexic, international, uncertain … (7+ letters) */
   function bare(w) { return w.toLowerCase().replace(/[’']s$/, '').replace(/[’']/g, ''); }
   function knownWord(w) { var l = bare(w); return !!(COMMON[l] || (l.length > 3 && /s$/.test(l) && (COMMON[l.slice(0, -1)] || (/es$/.test(l) && COMMON[l.slice(0, -2)])))); }
   var CAP = new RegExp('^[' + UP + '][' + LO + ']');
@@ -913,7 +915,7 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
     if (knownWord(w)) return false;
     if (CAP.test(w)) return true;                         /* Capitalised and not an ordinary word */
     var l = bare(w);
-    return !(l.length > 4 && SUFFIX.test(l));            /* confused, using, really, helpful … are not names */
+    return !((l.length > 4 && SUFFIX.test(l)) || (l.length > 6 && LONG_SHAPE.test(l)));   /* confused, really, dyslexic, uncertain … are not names */
   }
   var WORD = new RegExp('[' + UP + LO + '][' + UP + LO + '\'’-]*', 'y');
   /* up to `max` words from index i (spaces skipped, single-letter initials allowed) that pass ok() */
@@ -933,7 +935,9 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
   }
   var CUE_STRONG = new RegExp('\\b' + cues(['my name is', 'my name\'s', 'my name’s', 'my names', 'my name', 'name is', 'call me', 'i am called', 'i\'m called', 'i’m called', 'im called', 'signed']) + '\\s*[:,-]?|\\b' + ci('name') + '\\s*:', 'g');
   var CUE_SELF = new RegExp('\\b' + cues(['i am', 'i\'m', 'i’m', 'im']) + '\\b', 'g');
-  var CUE_PAIR = new RegExp('\\b' + cues(['this is', 'it is', 'it\'s', 'it’s', 'from', 'by', 'with', 'and', 'student', 'me and']) + '\\b', 'g');
+  var CUE_PAIR = new RegExp('\\b' + cues(['this is', 'it is', 'it\'s', 'it’s', 'from', 'by', 'student', 'me and']) + '\\b', 'g');
+  var CUE_PAIR_CAP = new RegExp('\\b' + cues(['with', 'and']) + '\\b', 'g');   /* "with Sarah Lee", not "with dark mode" */
+  var TITLE_WORD = new RegExp('[' + UP + '][' + LO + ']');
   var CUE_SIGN = new RegExp('(?:^|[\\n.!?;,]|\\s[-\u2013\u2014])\\s*' + cues(['kind regards', 'best regards', 'thank you', 'thanks', 'thx', 'regards', 'best', 'cheers', 'sincerely', 'love']) + '\\s*[,:\u2013\u2014-]?', 'g');
   var CUE_DASH = /\s[-\u2013\u2014]+/g;
   var IDS = new RegExp('\\b(' + ['student id', 'student number', 'student no', 'net id', 'netid', 'ksu id', 'username', 'user name', 'pin', 'id'].map(ci).join('|') + ')(\\s*(?:(?:[:#=]|no\\.?|number|is|was)\\s*)?)[A-Za-z]*\\d(?:[A-Za-z0-9_-]|\\.(?=[A-Za-z0-9]))*', 'g');
@@ -983,9 +987,12 @@ html.a2-reduce-motion *, html.a2-reduce-motion *::before, html.a2-reduce-motion 
       }
       scan(CUE_STRONG, 3, function (w) { return !STOP[bare(w)]; }, 1);   /* "my name is zed testname" */
       scan(CUE_SELF, 3, nameLike, 1);                                      /* "i'm zed", not "i'm confused" */
-      scan(CUE_PAIR, 3, nameLike, 2);                                      /* "from zed testname", "with Sarah Lee" */
+      var capName = function (w) { return (CAP.test(w) && nameLike(w)) || /^[B-HJ-Z]$/.test(w); };   /* Capitalised name or an initial */
+      var noCaps = !TITLE_WORD.test(s);                                    /* a writer who never capitalises */
+      scan(CUE_PAIR, 3, nameLike, 2);                                      /* "from zed testname", "this is zed testname" */
+      scan(CUE_PAIR_CAP, 3, capName, 2);                                   /* "with Sarah Lee", not "with dark mode" */
       scan(CUE_SIGN, 3, nameLike, 1, atEnd);                               /* "thanks, zed" at the end */
-      scan(CUE_DASH, 3, nameLike, 1, atEnd);                               /* "… - zed t" at the end */
+      scan(CUE_DASH, 3, noCaps ? nameLike : capName, 1, atEnd);            /* "… - Zed T", or "… -- zed" from a lowercase writer */
       var h = wordsAt(s, 0, 3, nameLike); if (h && /^\s+here\b/i.test(s.slice(h.end))) spans.push(h);   /* "zed here, …" */
       spans.sort(function (a, b) { return b.start - a.start || b.end - a.end; });
       var last = Infinity;

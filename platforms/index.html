@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platforms · A² Learning Studio</title>
+<meta name="description" content="Working platforms for construction management programs: course-rotation planning, ACCE outcome mapping, and teaching with real projects. Built by Dr. Ali Keyvanfar, Kennesaw State University.">
+<meta property="og:title" content="Platforms · A² Learning Studio">
+<meta property="og:description" content="Course-rotation planning, ACCE outcome mapping, and teaching with real projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Atelier "cinematic dark stage": the whole page is the theatre (berry), content floats on it as cream cards
+   with a gold edge. Gold is the thread: links, headings, hairlines, focus. No emoji, no arrows in CTA labels. */
+:root {
+  --berry-deep: #140910; --berry: #2a1420; --cream: #ECE2D0; --white: #FFFDF8;
+  --gold: #FFC629; --gold-ink: #8a6400; --ink: #1d1117; --ink-2: #4b3b41; --dusk: 120, 70, 150;
+  --gold-a16: rgba(255, 198, 41, .16); --gold-a45: rgba(255, 198, 41, .45);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--berry-deep); color: var(--cream); font: 400 1rem/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+::selection { background: var(--gold); color: var(--berry-deep); }
+a { color: var(--gold); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.skip { position: absolute; left: 1rem; top: -4rem; background: var(--gold); color: var(--berry-deep); padding: .6rem 1rem; border-radius: 999px; font-weight: 600; z-index: 9; text-decoration: none; }
+.skip:focus { top: 1rem; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2rem); }
+
+/* Hero: layered radial light + film grain */
+.hero { position: relative; overflow: hidden; padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(3rem, 7vw, 5rem);
+  background: radial-gradient(55% 60% at 88% 8%, rgba(255, 198, 41, .20), transparent 62%),
+              radial-gradient(50% 70% at 6% 96%, rgba(var(--dusk), .34), transparent 66%), var(--berry-deep); }
+.hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+@media (min-height: 860px) { .hero { min-height: 72svh; display: flex; align-items: center; } }
+.kicker { margin: 0 0 1rem; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-optical-sizing: auto; letter-spacing: -.02em; font-weight: 500; }
+h1 { margin: 0; font-size: clamp(2.3rem, 5.4vw, 3.75rem); line-height: 1.05; max-width: 16ch; color: var(--white); }
+.lede { margin: 1.3rem 0 0; max-width: 60ch; font-size: clamp(1.02rem, 1.6vw, 1.15rem); color: rgba(236, 226, 208, .86); }
+.ledger { list-style: none; margin: 1.6rem 0 0; padding: 0; display: grid; gap: .45rem; }
+.ledger li { border-left: 2px solid var(--gold); padding: .1rem 0 .1rem .8rem; font-size: .82rem; }
+.hero .ledger li { color: var(--cream); }
+.hero-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .7rem; }
+
+/* Buttons: pills only */
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .55rem 1.25rem; border-radius: 999px;
+  font-weight: 600; font-size: .95rem; text-decoration: none; border: 1px solid transparent; }
+.btn-gold { background: var(--gold); color: var(--berry-deep); }
+.btn-gold:hover { background: #ffd65e; }
+.btn-ghost { border-color: var(--gold-a45); color: var(--gold); background: transparent; }
+.btn-ghost:hover { background: var(--gold-a16); }
+
+/* Sections on the dark stage */
+section.group { padding: clamp(2.2rem, 5vw, 3.4rem) 0 .4rem; }
+.group h2 { margin: 0 0 .35rem; color: var(--gold); font-size: clamp(1.5rem, 2.8vw, 2rem); }
+.group .sub { margin: 0 0 1.4rem; max-width: 62ch; color: rgba(236, 226, 208, .78); }
+.rule { border: 0; border-top: 1px solid var(--gold-a16); margin: 0; }
+
+/* Cream cards with a gold edge and cinematic shadow */
+.grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.grid.two { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.card { position: relative; display: flex; flex-direction: column; gap: .75rem; background: var(--cream); color: var(--ink);
+  border-radius: 1.1rem; padding: 1.5rem 1.4rem 1.35rem 1.65rem; box-shadow: 0 28px 80px rgba(0, 0, 0, .38); }
+.card::before { content: ""; position: absolute; left: 0; top: 1.1rem; bottom: 1.1rem; width: 2px; background: var(--gold); border-radius: 2px; }
+.card .stamp { margin: 0; font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-ink); font-weight: 600; }
+.card h3 { margin: 0; font-size: clamp(1.3rem, 2.2vw, 1.6rem); line-height: 1.15; color: var(--ink); }
+.card p { margin: 0; color: var(--ink-2); }
+.card .ledger { margin: .1rem 0 0; }
+.card .ledger li { color: var(--ink); border-left-color: var(--gold-ink); }
+.card .actions { margin-top: auto; padding-top: .6rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .9rem; }
+.card .btn-gold { background: var(--berry-deep); color: var(--gold); }
+.card .btn-gold:hover { background: var(--berry); }
+.note { font-size: .8rem; color: var(--ink-2); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+footer { margin-top: clamp(2.6rem, 6vw, 4rem); border-top: 1px solid var(--gold-a16); padding: 1.6rem 0 2.6rem; font-size: .88rem; color: rgba(236, 226, 208, .78); }
+footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; }
+footer p { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+@media print {
+  body { background: #fff; color: #000; }
+  .hero { background: none; padding: 1rem 0; } .hero::after, .skip, .hero-actions { display: none; }
+  h1, .group h2, .kicker { color: #000; } .lede, .group .sub, footer { color: #222; }
+  .card { box-shadow: none; border: 1px solid #999; break-inside: avoid; background: #fff; }
+  .card .btn { border: 0; padding: 0; min-height: 0; background: none; color: #000; }
+  .card a[href]::after { content: " (" attr(href) ")"; font-size: .75rem; word-break: break-all; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#platforms">Skip to the platforms</a>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">A² Learning Studio · Keyvanfar &amp; Shafaghat · Kennesaw State University</p>
+    <h1>Tools that run a construction management program</h1>
+    <p class="lede">Working platforms built and used at Kennesaw State University: planning a course rotation, mapping accreditation outcomes, and teaching with real projects. Each one opens in the browser.</p>
+    <ul class="ledger">
+      <li>Built by Dr. Ali Keyvanfar, A² Learning Studio</li>
+      <li>Made for KSU's BS and MS in Construction Management</li>
+      <li>Open on any device; the two planning tools need an access code and work best on a laptop</li>
+    </ul>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="#leadership">Program planning tools</a>
+      <a class="btn btn-ghost" href="#teaching">Teaching platforms</a>
+    </div>
+  </div>
+</header>
+
+<main id="platforms">
+  <section class="group" id="leadership" aria-labelledby="h-lead">
+    <div class="wrap">
+      <h2 id="h-lead">Program leadership</h2>
+      <p class="sub">The two tools a program director uses every term: what runs when, and how every outcome is taught and measured.</p>
+      <div class="grid two">
+        <article class="card">
+          <p class="stamp">Planning</p>
+          <h3>MSCM Class Size Studio</h3>
+          <p>Tests a graduate program's course rotation against enrollment forecasts: which courses run each term and how full each section will be.</p>
+          <ul class="ledger">
+            <li>Course rotation by term</li>
+            <li>Section size and fill rate</li>
+            <li>Type your own enrollment scenario</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-gold" href="class-size-studio.html">Open Class Size Studio</a>
+            <span class="note">Access code required · best on a laptop</span>
+          </div>
+        </article>
+        <article class="card">
+          <p class="stamp">Accreditation</p>
+          <h3>ACCE Outcomes Platform</h3>
+          <p>Maps ACCE's 17 student learning outcomes across the curriculum, course by course, at Introduced, Reinforced and Assessed levels, with the measures and documents an accreditation visit asks for.</p>
+          <ul class="ledger">
+            <li>17 outcomes across every course</li>
+            <li>Introduced, Reinforced, Assessed matrix</li>
+            <li>Accreditation document set</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-gold" href="acce-outcomes.html">Open the ACCE platform</a>
+            <span class="note">Access code required · best on a laptop</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" id="teaching" aria-labelledby="h-teach">
+    <div class="wrap">
+      <h2 id="h-teach">Teaching with real projects</h2>
+      <p class="sub">Students learn construction by working on it: real buildings, real risks, and the long history of how people have built.</p>
+      <div class="grid">
+        <article class="card">
+          <p class="stamp">Project risk · CM 3400</p>
+          <h3>Project Risk Register: Midtown MOB</h3>
+          <p>Students identify, score and track the risks of a medical office building project through every phase, as the capstone of the project risk course.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="https://a2-learning-studio.github.io/risk-log-MOB/" target="_blank" rel="noopener">Open the Risk Register<span class="vh"> (opens in a new tab)</span></a>
+          </div>
+        </article>
+        <article class="card">
+          <p class="stamp">History and culture of building</p>
+          <h3>Construction Heritage Atlas</h3>
+          <p>1,256 ID cards on how the world built: sites, crews, tools, materials and finished projects across cultures and six millennia, each with its history, construction and lessons for today.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="https://claude.ai/artifact/92Ao4oAQGAh7S4QwzrPpzL" target="_blank" rel="noopener">Open the Atlas<span class="vh"> (opens in a new tab)</span></a>
+          </div>
+        </article>
+        <article class="card">
+          <p class="stamp">Learning data</p>
+          <h3>A² Learning Studio Data Ecosystem</h3>
+          <p>A narrated, interactive map of how the studio's platforms collect, analyze and export learning data for six stakeholder groups.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="../ecosystem.html">Open the Data Ecosystem</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" id="faculty" aria-labelledby="h-fac">
+    <div class="wrap">
+      <h2 id="h-fac">Faculty development and workforce</h2>
+      <p class="sub">The same approach, taught to faculty and to the construction workforce.</p>
+      <div class="grid">
+        <article class="card">
+          <p class="stamp">Faculty atelier · Ecuador 2026</p>
+          <h3>Vibe Coding for Research and Education</h3>
+          <p>A faculty atelier with Universidad UTE and UTPL, funded by CEDIA: 40 faculty built 20 research and teaching tools with AI-assisted software development.</p>
+          <ul class="ledger">
+            <li>40 faculty, 20 projects</li>
+            <li>12 research tools, 8 teaching tools</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-gold" href="https://facultyweb.kennesaw.edu/akeyvanf/live-workshops.php" target="_blank" rel="noopener">See the final projects<span class="vh"> (opens in a new tab)</span></a>
+          </div>
+        </article>
+        <article class="card">
+          <p class="stamp">Workforce training</p>
+          <h3>NEXUS-DC data-center training</h3>
+          <p>Twenty video modules on data-center construction and operations for the construction workforce.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="https://a2-learning-studio.github.io/nexus-dc-training/" target="_blank" rel="noopener">Open NEXUS-DC<span class="vh"> (opens in a new tab)</span></a>
+            <span class="note">Access code on request</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <p>A² Learning Studio · Keyvanfar &amp; Shafaghat · Kennesaw State University</p>
+    <p><a href="mailto:akeyvanf@kennesaw.edu">akeyvanf@kennesaw.edu</a> · <a href="../index.html">Studio home</a> · Updated November 2026</p>
+  </div>
+</footer>
+</body>
+</html>
